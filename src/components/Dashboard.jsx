@@ -105,11 +105,25 @@ export default function Dashboard({ tools, onSelectTool }) {
             </p>
           </div>
           <div className="mt-4 pt-4 border-t border-white/10 flex items-center justify-between text-xs text-slate-400 dark:text-slate-400">
-            <span>Server status: Active</span>
-            <span className="server-status-indicator relative flex h-2.5 w-2.5 shrink-0 items-center justify-center" aria-hidden="true">
-              <span className="absolute h-5 w-5 rounded-full bg-emerald-400/15 blur-lg opacity-80 motion-safe:animate-[pulse_2.8s_ease-in-out_infinite]"></span>
-              <span className="absolute h-4 w-4 rounded-full bg-emerald-400/20 opacity-60 motion-safe:animate-pulse"></span>
-              <span className="relative h-2 w-2 rounded-full bg-emerald-400 shadow-[0_0_16px_rgba(74,222,128,0.7),0_0_28px_rgba(74,222,128,0.35)] ring-1 ring-emerald-200/50 dark:ring-emerald-300/20"></span>
+            <span className="inline-flex items-center gap-1.5">
+              <span>Server status:</span>
+              <span className="inline-flex items-center gap-1.5">
+                <span>Active</span>
+                <span className="status-indicator relative inline-flex h-3.5 w-3.5 shrink-0 items-center justify-center align-middle">
+                  <span
+                    className="absolute h-8 w-8 rounded-full bg-emerald-400/15 blur-xl opacity-80 motion-safe:animate-[ping_0.28s_ease-in-out_infinite]"
+                    aria-hidden="true"
+                  />
+                  <span
+                    className="absolute h-6 w-6 rounded-full bg-emerald-400/20 opacity-55 motion-safe:animate-[pulse_0.24s_ease-in-out_infinite]"
+                    aria-hidden="true"
+                  />
+                  <span
+                    className="relative h-2.5 w-2.5 rounded-full bg-green-500 shadow-[0_0_12px_rgba(34,197,94,0.9)] ring-1 ring-green-200/50 animate-[pulse_0.2s_ease-in-out_infinite]"
+                    aria-hidden="true"
+                  />
+                </span>
+              </span>
             </span>
           </div>
         </div>

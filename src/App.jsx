@@ -173,15 +173,15 @@ export default function App() {
           >
             <span className="status-indicator relative mt-[0.42rem] flex h-3.5 w-3.5 shrink-0 items-center justify-center">
               <span
-                className="absolute h-8 w-8 rounded-full bg-emerald-400/15 blur-xl opacity-80 motion-safe:animate-[pulse_2.8s_ease-in-out_infinite]"
+                className="absolute h-8 w-8 rounded-full bg-[rgba(34,197,94,0.14)] blur-xl opacity-80 motion-safe:animate-[ping_0.45s_ease-in-out_infinite]"
                 aria-hidden="true"
               />
               <span
-                className="absolute h-6 w-6 rounded-full bg-emerald-400/20 opacity-55 motion-safe:animate-pulse"
+                className="absolute h-6 w-6 rounded-full bg-[rgba(34,197,94,0.2)] opacity-55 motion-safe:animate-[pulse_0.4s_ease-in-out_infinite]"
                 aria-hidden="true"
               />
               <span
-                className="relative h-2.5 w-2.5 rounded-full bg-emerald-400 shadow-[0_0_18px_rgba(74,222,128,0.65),0_0_32px_rgba(74,222,128,0.35)] ring-1 ring-emerald-200/50 dark:ring-emerald-300/20"
+                className="relative h-2.5 w-2.5 rounded-full bg-green-500 shadow-[0_0_12px_rgba(34,197,94,0.9)] ring-1 ring-green-200/50 animate-[pulse_0.35s_ease-in-out_infinite]"
                 aria-hidden="true"
               />
             </span>
@@ -191,8 +191,13 @@ export default function App() {
                   UNISH Tools
                 </h1>
               </div>
-              <p className="text-[10px] sm:text-xs">
-                Ultra-fast. Secure. Zero Server Storage.
+              <p className="text-[10px] sm:text-xs inline-flex items-center gap-1.5">
+                <span>Ultra-fast.</span>
+                <span>Secure. Zero Server Storage.</span>
+                <span
+                  className="inline-block h-2 w-2 shrink-0 rounded-full bg-green-500 animate-pulse shadow-[0_0_12px_rgba(34,197,94,0.9)]"
+                  aria-hidden="true"
+                />
               </p>
             </div>
           </div>
