@@ -41,7 +41,7 @@ export default function ImageResizer({ onBack }) {
     // Get original dimensions
     const img = new Image();
     img.onload = () => {
-      setOriginalDimensions({ w: img.width, h: img.h });
+      setOriginalDimensions({ w: img.width, h: img.height });
       setWidth(img.width);
       setHeight(img.height);
     };
@@ -50,7 +50,7 @@ export default function ImageResizer({ onBack }) {
 
   const handleWidthChange = (val) => {
     setWidth(val);
-    if (lockRatio && originalDimensions.w > 0) {
+    if (val !== "" && lockRatio && originalDimensions.w > 0) {
       const ratio = originalDimensions.h / originalDimensions.w;
       setHeight(Math.round(val * ratio) || "");
     }
@@ -58,7 +58,7 @@ export default function ImageResizer({ onBack }) {
 
   const handleHeightChange = (val) => {
     setHeight(val);
-    if (lockRatio && originalDimensions.h > 0) {
+    if (val !== "" && lockRatio && originalDimensions.h > 0) {
       const ratio = originalDimensions.w / originalDimensions.h;
       setWidth(Math.round(val * ratio) || "");
     }
@@ -246,7 +246,7 @@ export default function ImageResizer({ onBack }) {
                   <input
                     type="number"
                     value={width}
-                    onChange={(e) => handleWidthChange(parseInt(e.target.value) || "")}
+                    onChange={(e) => handleWidthChange(e.target.value === "" ? "" : parseInt(e.target.value))}
                     className="w-full px-4 py-2.5 rounded-xl border border-slate-700 bg-[#111827] text-white outline-none focus:border-cyan-400"
                   />
                 </div>
@@ -255,7 +255,7 @@ export default function ImageResizer({ onBack }) {
                   <input
                     type="number"
                     value={height}
-                    onChange={(e) => handleHeightChange(parseInt(e.target.value) || "")}
+                    onChange={(e) => handleHeightChange(e.target.value === "" ? "" : parseInt(e.target.value))}
                     className="w-full px-4 py-2.5 rounded-xl border border-slate-700 bg-[#111827] text-white outline-none focus:border-cyan-400"
                   />
                 </div>

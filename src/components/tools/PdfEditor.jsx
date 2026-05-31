@@ -51,6 +51,14 @@ const createShapeId = () => {
 
 const normalizeRotation = (rotation) => ((rotation % 360) + 360) % 360;
 
+const readNumericInput = (value) => (value === "" ? "" : Number(value));
+
+const commitNumericInput = (value, fallback, min = -Infinity, max = Infinity) => {
+    const parsed = Number(value);
+    if (!Number.isFinite(parsed)) return fallback;
+    return Math.min(max, Math.max(min, parsed));
+};
+
 const getCanvasSize = (page, zoom) => {
     const rotation = normalizeRotation(page.rotate);
     const rotated = rotation === 90 || rotation === 270;
@@ -1092,7 +1100,8 @@ export default function PdfEditor({ onBack }) {
                                                             min="12"
                                                             max="96"
                                                             value={selectedShape.fontSize}
-                                                            onChange={(e) => updateSelectedShape({ fontSize: Number(e.target.value) || 24 })}
+                                                            onChange={(e) => updateSelectedShape({ fontSize: readNumericInput(e.target.value) })}
+                                                            onBlur={(e) => updateSelectedShape({ fontSize: commitNumericInput(e.target.value, 24, 12, 96) })}
                                                             className="w-full rounded-2xl border border-slate-700 bg-[#111827] px-3 py-2 text-sm"
                                                         />
                                                     </div>
@@ -1132,7 +1141,12 @@ export default function PdfEditor({ onBack }) {
                                                             min="50"
                                                             max={currentPage?.width || 1000}
                                                             value={selectedShape.width}
-                                                            onChange={(e) => updateSelectedShape({ width: Number(e.target.value) || selectedShape.width })}
+                                                            onChange={(e) => updateSelectedShape({ width: readNumericInput(e.target.value) })}
+                                                            onBlur={(e) =>
+                                                                updateSelectedShape({
+                                                                    width: commitNumericInput(e.target.value, 50, 50, currentPage?.width || 1000),
+                                                                })
+                                                            }
                                                             className="w-full rounded-2xl border border-slate-700 bg-[#111827] px-3 py-2 text-sm"
                                                         />
                                                     </div>
@@ -1143,7 +1157,12 @@ export default function PdfEditor({ onBack }) {
                                                             min="50"
                                                             max={currentPage?.height || 1000}
                                                             value={selectedShape.height}
-                                                            onChange={(e) => updateSelectedShape({ height: Number(e.target.value) || selectedShape.height })}
+                                                            onChange={(e) => updateSelectedShape({ height: readNumericInput(e.target.value) })}
+                                                            onBlur={(e) =>
+                                                                updateSelectedShape({
+                                                                    height: commitNumericInput(e.target.value, 50, 50, currentPage?.height || 1000),
+                                                                })
+                                                            }
                                                             className="w-full rounded-2xl border border-slate-700 bg-[#111827] px-3 py-2 text-sm"
                                                         />
                                                     </div>

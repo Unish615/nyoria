@@ -93,7 +93,7 @@ export default function Dashboard({ tools, onSelectTool }) {
   const favoriteTools = tools.filter((t) => favorites.includes(t.id));
 
   return (
-    <div className="space-y-8 animate-floatUp">
+    <div className="resizable-dashboard space-y-8 animate-floatUp">
       {/* Welcome & Stats Row */}
       <div className="grid gap-6 md:grid-cols-4">
         <div className="md:col-span-2 flex flex-col justify-between p-6 rounded-3xl bg-gradient-to-br from-blue-500/10 via-cyan-500/5 to-transparent border border-blue-500/20 shadow-glass backdrop-blur-xl">

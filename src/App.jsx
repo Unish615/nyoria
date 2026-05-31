@@ -55,7 +55,7 @@ const TOOLS = [
   {
     id: "converter",
     name: "Format Converter",
-    description: "Bulk convert images instantly between JPG, PNG, WEBP, BMP, and HEIC streams.",
+    description: "Bulk convert images and export PDF pages as PNG, JPG, WEBP, AVIF, or BMP files.",
     category: "image",
     icon: <Repeat className="w-5 h-5" />,
   },

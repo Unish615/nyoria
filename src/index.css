@@ -13,6 +13,15 @@ body {
   font-family: 'Inter', sans-serif;
 }
 
+* {
+  min-width: 0;
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
 h1, h2, h3, h4, h5, h6 {
   font-family: 'Outfit', sans-serif;
 }
@@ -186,6 +195,55 @@ h1, h2, h3, h4, h5, h6 {
   border-color: #d1d5db !important;
 }
 
+.neutral-theme :is(input, select, textarea) {
+  pointer-events: auto !important;
+  position: relative;
+  z-index: 1;
+  max-width: 100%;
+  min-height: 2.25rem;
+  user-select: text;
+  -webkit-user-select: text;
+  caret-color: currentColor;
+  touch-action: manipulation;
+}
+
+.neutral-theme :is(input, select, textarea):focus {
+  outline: 2px solid rgba(107, 114, 128, 0.35);
+  outline-offset: 2px;
+}
+
+.neutral-theme textarea {
+  resize: vertical;
+  min-height: 8rem;
+}
+
+.neutral-theme input[type="range"],
+.neutral-theme input[type="checkbox"],
+.neutral-theme input[type="radio"],
+.neutral-theme input[type="color"],
+.neutral-theme input[type="file"] {
+  min-height: auto;
+  user-select: auto;
+  -webkit-user-select: auto;
+}
+
+.neutral-theme img,
+.neutral-theme canvas,
+.neutral-theme video,
+.neutral-theme svg {
+  max-width: 100%;
+}
+
+.neutral-theme button,
+.neutral-theme [role="button"],
+.neutral-theme a {
+  max-width: 100%;
+}
+
+.neutral-theme button {
+  white-space: normal;
+}
+
 .neutral-theme.theme-dark :is(
   input,
   select,
@@ -256,6 +314,67 @@ h1, h2, h3, h4, h5, h6 {
 .neutral-theme.theme-dark ::selection {
   background: #4b5563;
   color: #f9fafb;
+}
+
+.resizable-tool-surface {
+  resize: both;
+  max-width: 100%;
+  margin-inline: auto;
+  transition: width 180ms ease, min-height 180ms ease, background-color 180ms ease;
+}
+
+.resizable-dashboard {
+  resize: vertical;
+  overflow: auto;
+  min-height: 520px;
+  max-width: 100%;
+}
+
+.resizable-size-control input {
+  width: auto !important;
+}
+
+.resizable-tool-surface > * {
+  min-width: 0;
+}
+
+.resizable-tool-surface :is(.grid, .flex),
+.resizable-dashboard :is(.grid, .flex) {
+  min-width: 0;
+}
+
+.resizable-tool-surface :is(input, select, textarea, button) {
+  font-size: max(0.75rem, 16px);
+}
+
+@media (max-width: 1024px) {
+  .resizable-tool-surface {
+    width: 100% !important;
+    resize: vertical;
+  }
+}
+
+@media (max-width: 640px) {
+  body {
+    overflow-x: hidden;
+  }
+
+  .neutral-theme {
+    padding: 0.75rem !important;
+  }
+
+  .glass {
+    border-radius: 20px;
+  }
+
+  .resizable-tool-surface {
+    min-height: 420px !important;
+    padding: 1rem !important;
+  }
+
+  .neutral-theme :is(input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="color"]), select, textarea, button) {
+    width: 100%;
+  }
 }
 
 /* Custom modern scrollbars */
