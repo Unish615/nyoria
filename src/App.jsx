@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import {
   Moon,
   Sun,
-  Sparkles,
   FileImage,
   Layers,
   FileText,
@@ -115,7 +114,7 @@ export default function App() {
   const [isDark, setIsDark] = useState(() => {
     const saved = localStorage.getItem("unish_dark_mode");
     if (saved !== null) return saved === "true";
-    return window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
+    return true;
   });
 
   useEffect(() => {
@@ -154,12 +153,12 @@ export default function App() {
   };
 
   return (
-    <div className={`neutral-theme ${isDark ? "theme-dark dark" : ""} relative min-h-screen overflow-x-hidden bg-gradient-to-br from-[#0B0F1A] via-slate-950/50 to-[#0B0F1A] p-4 transition-colors duration-300 dark:from-[#0B0F1A] dark:via-slate-950 dark:to-[#0B0F1A] sm:p-6 text-[#E5E7EB] dark:text-[#E5E7EB]`}>
+    <div className={`neutral-theme ${isDark ? "theme-dark dark" : ""} relative min-h-screen overflow-x-hidden p-4 transition-colors duration-300 sm:p-6`}>
 
-      {/* Decorative cyber neon grids */}
+      {/* Decorative neutral grids */}
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:14px_24px] pointer-events-none" />
-      <div className="absolute top-0 right-1/4 w-[350px] h-[350px] bg-gray-200/60 rounded-full blur-[100px] pointer-events-none" />
-      <div className="absolute bottom-0 left-1/4 w-[350px] h-[350px] bg-gray-300/50 rounded-full blur-[100px] pointer-events-none" />
+      <div className="absolute top-0 right-1/4 w-[350px] h-[350px] bg-[#F9FAFB] blur-[100px] pointer-events-none" />
+      <div className="absolute bottom-0 left-1/4 w-[350px] h-[350px] bg-[#F3F4F6] blur-[100px] pointer-events-none" />
 
       <div className="relative mx-auto flex w-full max-w-7xl flex-col gap-6">
 
@@ -167,27 +166,44 @@ export default function App() {
         <header className="glass flex items-center justify-between px-6 py-4 shadow-glass">
           <div
             onClick={() => setActiveTool(null)}
-            className="flex items-center space-x-3 cursor-pointer group"
+            className="group flex cursor-pointer items-start gap-3"
+            role="button"
+            tabIndex={0}
+            aria-label="Go to dashboard"
           >
-            <div className="p-2.5 rounded-2xl bg-gray-900 text-white shadow-sm group-hover:scale-105 transition-transform duration-300">
-              <Sparkles className="w-5 h-5" />
-            </div>
-            <div>
-              <h1 className="text-lg font-extrabold tracking-tight sm:text-xl text-gray-950">
-                UNISH Tools
-              </h1>
-              <p className="text-[10px] sm:text-xs text-gray-500">
+            <span className="status-indicator relative mt-[0.42rem] flex h-3.5 w-3.5 shrink-0 items-center justify-center">
+              <span
+                className="absolute h-8 w-8 rounded-full bg-emerald-400/15 blur-xl opacity-80 motion-safe:animate-[pulse_2.8s_ease-in-out_infinite]"
+                aria-hidden="true"
+              />
+              <span
+                className="absolute h-6 w-6 rounded-full bg-emerald-400/20 opacity-55 motion-safe:animate-pulse"
+                aria-hidden="true"
+              />
+              <span
+                className="relative h-2.5 w-2.5 rounded-full bg-emerald-400 shadow-[0_0_18px_rgba(74,222,128,0.65),0_0_32px_rgba(74,222,128,0.35)] ring-1 ring-emerald-200/50 dark:ring-emerald-300/20"
+                aria-hidden="true"
+              />
+            </span>
+            <div className="flex flex-col">
+              <div className="flex items-center gap-2">
+                <h1 className="text-lg font-extrabold tracking-tight sm:text-xl">
+                  UNISH Tools
+                </h1>
+              </div>
+              <p className="text-[10px] sm:text-xs">
                 Ultra-fast. Secure. Zero Server Storage.
               </p>
             </div>
           </div>
 
           <button
-            className="rounded-2xl border border-gray-300 bg-white p-2.5 text-gray-700 transition hover:scale-105 hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-200 dark:hover:bg-gray-800"
+            className="rounded-2xl p-2.5 transition hover:scale-105"
             onClick={() => setIsDark((v) => !v)}
             type="button"
             title={isDark ? "Switch to Light Mode" : "Switch to Dark Mode"}
             aria-label={isDark ? "Switch to Light Mode" : "Switch to Dark Mode"}
+            style={{ background: 'var(--surface)', border: '1px solid var(--border)', color: 'var(--text-primary)' }}
           >
             {isDark ? <Sun size={18} /> : <Moon size={18} />}
           </button>

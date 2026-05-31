@@ -14,7 +14,6 @@ import {
   Trash2,
   Share2,
   FileMinus,
-  Sparkles,
   QrCode,
   Flame,
 } from "lucide-react";
@@ -98,12 +97,6 @@ export default function Dashboard({ tools, onSelectTool }) {
       <div className="grid gap-6 md:grid-cols-4">
         <div className="md:col-span-2 flex flex-col justify-between p-6 rounded-3xl bg-gradient-to-br from-blue-500/10 via-cyan-500/5 to-transparent border border-blue-500/20 shadow-glass backdrop-blur-xl">
           <div className="space-y-2">
-            <div className="flex items-center space-x-2">
-              <Sparkles className="w-5 h-5 text-cyan-400 animate-pulse" />
-              <span className="text-xs font-semibold tracking-wider text-cyan-400 uppercase">
-                AI-Powered Utilities
-              </span>
-            </div>
             <h2 className="text-2xl font-bold text-[#E5E7EB] dark:text-white sm:text-3xl">
               UNISH Tools
             </h2>
@@ -113,9 +106,10 @@ export default function Dashboard({ tools, onSelectTool }) {
           </div>
           <div className="mt-4 pt-4 border-t border-white/10 flex items-center justify-between text-xs text-slate-400 dark:text-slate-400">
             <span>Server status: Active</span>
-            <span className="flex h-2 w-2 relative">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+            <span className="server-status-indicator relative flex h-2.5 w-2.5 shrink-0 items-center justify-center" aria-hidden="true">
+              <span className="absolute h-5 w-5 rounded-full bg-emerald-400/15 blur-lg opacity-80 motion-safe:animate-[pulse_2.8s_ease-in-out_infinite]"></span>
+              <span className="absolute h-4 w-4 rounded-full bg-emerald-400/20 opacity-60 motion-safe:animate-pulse"></span>
+              <span className="relative h-2 w-2 rounded-full bg-emerald-400 shadow-[0_0_16px_rgba(74,222,128,0.7),0_0_28px_rgba(74,222,128,0.35)] ring-1 ring-emerald-200/50 dark:ring-emerald-300/20"></span>
             </span>
           </div>
         </div>
@@ -158,12 +152,9 @@ export default function Dashboard({ tools, onSelectTool }) {
       {/* Favorites Section */}
       {favoriteTools.length > 0 && (
         <section className="space-y-4">
-          <div className="flex items-center space-x-2">
-            <Star className="w-5 h-5 text-amber-400 fill-amber-400" />
-            <h3 className="text-lg font-bold text-[#E5E7EB] dark:text-[#E5E7EB]">
-              Favorite Tools
-            </h3>
-          </div>
+          <h3 className="text-lg font-bold text-[#E5E7EB] dark:text-[#E5E7EB]">
+            Favorite Tools
+          </h3>
           <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
             {favoriteTools.map((t) => (
               <div
@@ -218,11 +209,10 @@ export default function Dashboard({ tools, onSelectTool }) {
                 <button
                   key={c.id}
                   onClick={() => setActiveCategory(c.id)}
-                  className={`px-4 py-1.5 rounded-xl text-xs font-semibold transition-all ${
-                    activeCategory === c.id
-                      ? "bg-slate-900 text-white dark:bg-[#111827]/10 dark:text-white"
-                      : "text-slate-600 dark:text-slate-400 hover:bg-slate-950/10 dark:hover:bg-[#111827]/10"
-                  }`}
+                  className={`px-4 py-1.5 rounded-xl text-xs font-semibold transition-all ${activeCategory === c.id
+                    ? "bg-slate-900 text-white dark:bg-[#111827]/10 dark:text-white"
+                    : "text-slate-600 dark:text-slate-400 hover:bg-slate-950/10 dark:hover:bg-[#111827]/10"
+                    }`}
                 >
                   {c.label}
                 </button>
