@@ -5,12 +5,12 @@ import QRCode from "qrcode";
 import confetti from "canvas-confetti";
 
 export default function QrGenerator({ onBack }) {
-  const [qrType, setQrType] = useState("url"); // url, text, wifi, contact
-  
+  const [qrType, setQrType] = useState("url"); // url, text, wifi, contact, esewa
+
   // Inputs
   const [url, setUrl] = useState("https://google.com");
   const [text, setText] = useState("Hello UNISH!");
-  
+
   // WiFi Inputs
   const [ssid, setSsid] = useState("");
   const [password, setPassword] = useState("");
@@ -21,6 +21,13 @@ export default function QrGenerator({ onBack }) {
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
   const [org, setOrg] = useState("");
+
+  // eSewa Payment Inputs
+  const [esewaAmount, setEsewaAmount] = useState("");
+  const [esewaMerchant, setEsewaMerchant] = useState("");
+  const [esewaProductId, setEsewaProductId] = useState("");
+  const [esewaSuccessUrl, setEsewaSuccessUrl] = useState("https://example.com/success");
+  const [esewaFailureUrl, setEsewaFailureUrl] = useState("https://example.com/failure");
 
   // Styling
   const [fgColor, setFgColor] = useState("#000000");
@@ -41,6 +48,15 @@ export default function QrGenerator({ onBack }) {
         return `WIFI:S:${ssid};T:${encryption};P:${password};;`;
       case "contact":
         return `BEGIN:VCARD\nVERSION:3.0\nN:${name}\nORG:${org}\nTEL:${phone}\nEMAIL:${email}\nEND:VCARD`;
+      case "esewa": {
+        const params = new URLSearchParams();
+        if (esewaAmount.trim()) params.set("amt", esewaAmount.trim());
+        if (esewaMerchant.trim()) params.set("scd", esewaMerchant.trim());
+        if (esewaProductId.trim()) params.set("pid", esewaProductId.trim());
+        if (esewaSuccessUrl.trim()) params.set("su", esewaSuccessUrl.trim());
+        if (esewaFailureUrl.trim()) params.set("fu", esewaFailureUrl.trim());
+        return `esewa://pay?${params.toString()}`;
+      }
       default:
         return "";
     }
@@ -71,7 +87,26 @@ export default function QrGenerator({ onBack }) {
 
   useEffect(() => {
     drawQrCode();
-  }, [qrType, url, text, ssid, password, encryption, name, phone, email, org, fgColor, bgColor, margin]);
+  }, [
+    qrType,
+    url,
+    text,
+    ssid,
+    password,
+    encryption,
+    name,
+    phone,
+    email,
+    org,
+    esewaAmount,
+    esewaMerchant,
+    esewaProductId,
+    esewaSuccessUrl,
+    esewaFailureUrl,
+    fgColor,
+    bgColor,
+    margin,
+  ]);
 
   const handleDownload = () => {
     if (!qrUrl) return;
@@ -102,7 +137,7 @@ export default function QrGenerator({ onBack }) {
     <ToolWrapper
       id="qr-generator"
       title="QR Code Generator"
-      description="Create customized QR codes for URLs, WiFi configurations, plain texts, or vCard digital contacts."
+      description="Create customized QR codes for URLs, WiFi configurations, plain texts, vCard contacts, or eSewa payments."
       onBack={onBack}
     >
       <div className="grid gap-8 lg:grid-cols-3 animate-floatUp">
@@ -114,15 +149,15 @@ export default function QrGenerator({ onBack }) {
               { id: "text", label: "Plain Text" },
               { id: "wifi", label: "Wi-Fi Config" },
               { id: "contact", label: "vCard Contact" },
+              { id: "esewa", label: "eSewa Payment" },
             ].map((m) => (
               <button
                 key={m.id}
                 onClick={() => setQrType(m.id)}
-                className={`w-full py-1.5 rounded-lg text-xs font-semibold transition-all ${
-                  qrType === m.id
-                    ? "bg-slate-900 text-white dark:bg-[#111827]/10 dark:text-white"
-                    : "text-slate-600 dark:text-slate-400 hover:bg-slate-950/10 dark:hover:bg-[#111827]/10"
-                }`}
+                className={`w-full py-1.5 rounded-lg text-xs font-semibold transition-all ${qrType === m.id
+                  ? "bg-slate-900 text-white dark:bg-[#111827]/10 dark:text-white"
+                  : "text-slate-600 dark:text-slate-400 hover:bg-slate-950/10 dark:hover:bg-[#111827]/10"
+                  }`}
               >
                 {m.label}
               </button>
@@ -240,6 +275,69 @@ export default function QrGenerator({ onBack }) {
                     className="w-full px-3 py-2 rounded-xl border border-slate-700 bg-[#111827] dark:border-slate-800 dark:bg-[#0B0F1A] text-slate-900 dark:text-white outline-none text-xs"
                   />
                 </div>
+              </div>
+            )}
+
+            {qrType === "esewa" && (
+              <div className="space-y-4">
+                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                  <div className="space-y-2">
+                    <label className="text-xs text-slate-200 dark:text-slate-400 font-semibold">Payment Amount</label>
+                    <input
+                      type="text"
+                      inputMode="decimal"
+                      value={esewaAmount}
+                      onChange={(e) => setEsewaAmount(e.target.value)}
+                      placeholder="100.00"
+                      className="w-full px-3 py-2 rounded-xl border border-slate-700 bg-[#111827] dark:border-slate-800 dark:bg-[#0B0F1A] text-slate-900 dark:text-white outline-none text-xs"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <label className="text-xs text-slate-200 dark:text-slate-400 font-semibold">Merchant Code (scd)</label>
+                    <input
+                      type="text"
+                      value={esewaMerchant}
+                      onChange={(e) => setEsewaMerchant(e.target.value)}
+                      placeholder="merchant123"
+                      className="w-full px-3 py-2 rounded-xl border border-slate-700 bg-[#111827] dark:border-slate-800 dark:bg-[#0B0F1A] text-slate-900 dark:text-white outline-none text-xs"
+                    />
+                  </div>
+                </div>
+                <div className="space-y-2">
+                  <label className="text-xs text-slate-200 dark:text-slate-400 font-semibold">Product / Invoice ID (pid)</label>
+                  <input
+                    type="text"
+                    value={esewaProductId}
+                    onChange={(e) => setEsewaProductId(e.target.value)}
+                    placeholder="order-456"
+                    className="w-full px-3 py-2 rounded-xl border border-slate-700 bg-[#111827] dark:border-slate-800 dark:bg-[#0B0F1A] text-slate-900 dark:text-white outline-none text-xs"
+                  />
+                </div>
+                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                  <div className="space-y-2">
+                    <label className="text-xs text-slate-200 dark:text-slate-400 font-semibold">Success URL</label>
+                    <input
+                      type="url"
+                      value={esewaSuccessUrl}
+                      onChange={(e) => setEsewaSuccessUrl(e.target.value)}
+                      placeholder="https://example.com/success"
+                      className="w-full px-3 py-2 rounded-xl border border-slate-700 bg-[#111827] dark:border-slate-800 dark:bg-[#0B0F1A] text-slate-900 dark:text-white outline-none text-xs"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <label className="text-xs text-slate-200 dark:text-slate-400 font-semibold">Failure URL</label>
+                    <input
+                      type="url"
+                      value={esewaFailureUrl}
+                      onChange={(e) => setEsewaFailureUrl(e.target.value)}
+                      placeholder="https://example.com/failure"
+                      className="w-full px-3 py-2 rounded-xl border border-slate-700 bg-[#111827] dark:border-slate-800 dark:bg-[#0B0F1A] text-slate-900 dark:text-white outline-none text-xs"
+                    />
+                  </div>
+                </div>
+                <p className="text-[11px] text-slate-400 dark:text-slate-500">
+                  eSewa payment QR payload follows the format: <code>esewa://pay?amt=...&scd=...&pid=...&su=...&fu=...</code>
+                </p>
               </div>
             )}
           </div>

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { UploadCloud } from "lucide-react";
 
 function readAllDirectoryEntries(reader) {
@@ -48,6 +48,7 @@ export default function DropZone({
   className = "",
 }) {
   const [isDragging, setIsDragging] = useState(false);
+  const inputRef = useRef(null);
 
   const handleDrag = (e) => {
     e.preventDefault();
@@ -91,6 +92,18 @@ export default function DropZone({
   const handleFileInput = (e) => {
     if (e.target.files && e.target.files.length > 0) {
       onFilesSelected(e.target.files);
+      e.target.value = "";
+    }
+  };
+
+  const openFilePicker = () => {
+    inputRef.current?.click();
+  };
+
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault();
+      openFilePicker();
     }
   };
 
@@ -100,20 +113,26 @@ export default function DropZone({
       onDragOver={handleDrag}
       onDragLeave={handleDrag}
       onDrop={handleDrop}
+      onClick={openFilePicker}
+      onKeyDown={handleKeyDown}
+      role="button"
+      tabIndex={0}
       className={`group relative flex min-h-[220px] cursor-pointer flex-col items-center justify-center rounded-3xl border-2 border-dashed p-8 text-center transition-all duration-300 ${isDragging
           ? "border-cyan-400 bg-cyan-400/10 shadow-[0_0_20px_rgba(34,211,238,0.15)]"
           : "border-slate-300 bg-[#111827]/40 hover:border-cyan-400 hover:bg-slate-900/60 dark:border-slate-800 dark:bg-[#111827]/10 dark:hover:border-cyan-400/50 dark:hover:bg-[#111827]/10"
         } ${className}`}
     >
       <input
+        ref={inputRef}
         type="file"
         multiple={multiple}
         accept={accept}
         onChange={handleFileInput}
-        className="absolute inset-0 cursor-pointer opacity-0"
+        className="sr-only"
+        tabIndex={-1}
         {...(allowFolders ? { webkitdirectory: true, directory: true } : {})}
       />
-      <div className="flex flex-col items-center justify-center space-y-3 pointer-events-none">
+      <div className="pointer-events-none flex flex-col items-center justify-center space-y-3">
         <div className={`p-4 rounded-full bg-slate-950/10 dark:bg-slate-900 transition-transform duration-300 group-hover:-translate-y-1 ${isDragging ? "bg-cyan-400 text-white dark:bg-cyan-400" : "text-slate-400 dark:text-slate-400"
           }`}>
           <UploadCloud className="w-8 h-8" />

@@ -551,10 +551,10 @@ app.post("/api/compress-pdf", upload.single("pdf"), async (req, res) => {
     }
 
     const pdfDoc = await PDFDocument.load(req.file.buffer);
-    const resources = pdfDoc.context.enumerateUnindirectObjects();
+    const resources = pdfDoc.context.enumerateIndirectObjects();
 
     // Find all raw stream image objects and compress them
-    for (const [ref, obj] of resources) {
+    for (const [, obj] of resources) {
       if (obj instanceof PDFRawStream) {
         const dict = obj.dict;
         const subtype = dict.get(PDFName.of("Subtype"));
@@ -581,8 +581,8 @@ app.post("/api/compress-pdf", upload.single("pdf"), async (req, res) => {
     // Check size, if still too large and target size is given, attempt a heavier compression
     if (targetBytes && pdfBytes.length > targetBytes) {
       const secondDoc = await PDFDocument.load(pdfBytes);
-      const resObjects = secondDoc.context.enumerateUnindirectObjects();
-      for (const [ref, obj] of resObjects) {
+      const resObjects = secondDoc.context.enumerateIndirectObjects();
+      for (const [, obj] of resObjects) {
         if (obj instanceof PDFRawStream) {
           const dict = obj.dict;
           const subtype = dict.get(PDFName.of("Subtype"));
@@ -880,15 +880,18 @@ app.post("/api/ocr", upload.single("image"), async (req, res) => {
       return res.status(400).json({ error: "No image file uploaded" });
     }
 
-    const lang = req.body.lang || "eng"; // eng, spa, fra, deu
+    const supportedLanguages = new Set(["eng", "spa", "fra", "deu"]);
+    const lang = supportedLanguages.has(req.body.lang) ? req.body.lang : "eng";
     const jpegBuffer = await ensureJpegBuffer(req.file);
 
-    const worker = await createWorker();
-    await worker.loadLanguage(lang);
-    await worker.initialize(lang);
-
-    const { data: { text } } = await worker.recognize(jpegBuffer);
-    await worker.terminate();
+    const worker = await createWorker(lang);
+    let text = "";
+    try {
+      const result = await worker.recognize(jpegBuffer);
+      text = result.data.text;
+    } finally {
+      await worker.terminate();
+    }
 
     res.json({ text });
   } catch (error) {

@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import DropZone from "../DropZone";
 import ToolWrapper from "../ToolWrapper";
-import { Download, RefreshCw, FileText, Check, Copy, FileCode } from "lucide-react";
+import { Download, RefreshCw, FileText, Check, Copy, FileCode, Search, Trash2 } from "lucide-react";
 import confetti from "canvas-confetti";
 import { jsPDF } from "jspdf";
 
@@ -13,6 +13,48 @@ export default function OcrExtractor({ onBack }) {
   const [extractedText, setExtractedText] = useState("");
   const [copied, setCopied] = useState(false);
   const [error, setError] = useState("");
+  const [searchTerm, setSearchTerm] = useState("");
+  const [preserveLineBreaks, setPreserveLineBreaks] = useState(true);
+  const [cleanSpacing, setCleanSpacing] = useState(true);
+
+  const textStats = useMemo(() => {
+    const trimmed = extractedText.trim();
+    const words = trimmed ? trimmed.split(/\s+/).filter(Boolean).length : 0;
+    const lines = trimmed ? trimmed.split(/\n/).filter((line) => line.trim()).length : 0;
+    const matches =
+      searchTerm.trim() && trimmed
+        ? (trimmed.match(new RegExp(searchTerm.trim().replace(/[.*+?^${}()|[\]\\]/g, "\\$&"), "gi")) || []).length
+        : 0;
+
+    return {
+      characters: extractedText.length,
+      words,
+      lines,
+      matches,
+      readingMinutes: Math.max(1, Math.ceil(words / 220)),
+    };
+  }, [extractedText, searchTerm]);
+
+  const normalizeText = (text) => {
+    let nextText = text.replace(/\r\n?/g, "\n");
+
+    if (cleanSpacing) {
+      nextText = nextText
+        .split("\n")
+        .map((line) => line.replace(/[ \t]+/g, " ").trim())
+        .join("\n")
+        .replace(/\n{3,}/g, "\n\n");
+    }
+
+    if (!preserveLineBreaks) {
+      nextText = nextText
+        .replace(/-\n/g, "")
+        .replace(/\n+/g, " ")
+        .replace(/\s{2,}/g, " ");
+    }
+
+    return nextText.trim();
+  };
 
   const handleFiles = (fileList) => {
     setError("");
@@ -24,6 +66,7 @@ export default function OcrExtractor({ onBack }) {
     setFile(selected);
     setPreview(URL.createObjectURL(selected));
     setExtractedText("");
+    setSearchTerm("");
   };
 
   const processOcr = async () => {
@@ -48,7 +91,10 @@ export default function OcrExtractor({ onBack }) {
       }
 
       const data = await response.json();
-      setExtractedText(data.text || "No text was detected in the uploaded image.");
+      const text = data.text?.trim()
+        ? normalizeText(data.text)
+        : "No text was detected in the uploaded image.";
+      setExtractedText(text);
 
       confetti({
         particleCount: 50,
@@ -79,6 +125,15 @@ export default function OcrExtractor({ onBack }) {
     setTimeout(() => setCopied(false), 2000);
   };
 
+  const applyCleanup = () => {
+    setExtractedText((text) => normalizeText(text));
+  };
+
+  const clearResult = () => {
+    setExtractedText("");
+    setSearchTerm("");
+  };
+
   const downloadAsTxt = () => {
     const blob = new Blob([extractedText], { type: "text/plain;charset=utf-8" });
     const url = URL.createObjectURL(blob);
@@ -95,6 +150,25 @@ export default function OcrExtractor({ onBack }) {
     const splitText = doc.splitTextToSize(extractedText, 180);
     doc.text(splitText, 15, 20);
     doc.save(`${file?.name.replace(/\.[^/.]+$/, "")}_extracted.pdf`);
+  };
+
+  const downloadAsJson = () => {
+    const payload = {
+      sourceFile: file?.name || null,
+      language,
+      stats: textStats,
+      text: extractedText,
+      exportedAt: new Date().toISOString(),
+    };
+    const blob = new Blob([JSON.stringify(payload, null, 2)], {
+      type: "application/json;charset=utf-8",
+    });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = `${file?.name.replace(/\.[^/.]+$/, "")}_ocr.json`;
+    link.click();
+    URL.revokeObjectURL(url);
   };
 
   return (
@@ -125,6 +199,7 @@ export default function OcrExtractor({ onBack }) {
                     setFile(null);
                     setPreview("");
                     setExtractedText("");
+                    setSearchTerm("");
                   }}
                   className="text-xs text-cyan-400 hover:underline font-semibold"
                 >
@@ -159,7 +234,43 @@ export default function OcrExtractor({ onBack }) {
                     {copied ? <Check className="w-3.5 h-3.5 text-emerald-500" /> : <Copy className="w-3.5 h-3.5" />}
                     <span>{copied ? "Copied" : "Copy"}</span>
                   </button>
+                  <button
+                    onClick={clearResult}
+                    className="p-1.5 text-slate-400 hover:text-slate-300 hover:bg-[#111827]/10 rounded-lg text-xs font-bold transition flex items-center space-x-1"
+                    title="Clear extracted text"
+                  >
+                    <Trash2 className="w-3.5 h-3.5" />
+                    <span>Clear</span>
+                  </button>
                 </div>
+              </div>
+
+              <div className="grid gap-2 sm:grid-cols-4">
+                {[
+                  ["Words", textStats.words],
+                  ["Characters", textStats.characters],
+                  ["Lines", textStats.lines],
+                  ["Read time", `${textStats.readingMinutes} min`],
+                ].map(([label, value]) => (
+                  <div key={label} className="rounded-2xl border border-white/10 bg-[#111827]/10 p-3">
+                    <p className="text-[10px] font-semibold uppercase tracking-wider text-slate-400">{label}</p>
+                    <p className="mt-1 text-sm font-bold text-[#E5E7EB] dark:text-white">{value}</p>
+                  </div>
+                ))}
+              </div>
+
+              <div className="relative">
+                <Search className="absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
+                <input
+                  type="text"
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  placeholder="Search extracted text..."
+                  className="w-full rounded-2xl border border-slate-700 bg-[#111827] py-2 pl-10 pr-24 text-xs text-white outline-none focus:border-cyan-400"
+                />
+                <span className="absolute right-3.5 top-1/2 -translate-y-1/2 text-[10px] font-semibold text-slate-400">
+                  {searchTerm ? `${textStats.matches} matches` : "Ready"}
+                </span>
               </div>
 
               <textarea
@@ -169,6 +280,13 @@ export default function OcrExtractor({ onBack }) {
               />
 
               <div className="flex flex-wrap gap-3 mt-3">
+                <button
+                  onClick={applyCleanup}
+                  className="flex items-center space-x-1.5 px-4 py-2 bg-[#111827] hover:bg-slate-800 text-white rounded-xl text-xs font-bold border border-slate-700 transition"
+                >
+                  <RefreshCw className="w-4 h-4 text-cyan-400" />
+                  <span>Apply Cleanup</span>
+                </button>
                 <button
                   onClick={downloadAsTxt}
                   className="flex items-center space-x-1.5 px-4 py-2 bg-[#111827] hover:bg-slate-800 text-white rounded-xl text-xs font-bold border border-slate-700 transition"
@@ -182,6 +300,13 @@ export default function OcrExtractor({ onBack }) {
                 >
                   <Download className="w-4 h-4" />
                   <span>Download PDF Document</span>
+                </button>
+                <button
+                  onClick={downloadAsJson}
+                  className="flex items-center space-x-1.5 px-4 py-2 bg-[#111827] hover:bg-slate-800 text-white rounded-xl text-xs font-bold border border-slate-700 transition"
+                >
+                  <FileCode className="w-4 h-4 text-cyan-400" />
+                  <span>Download JSON</span>
                 </button>
               </div>
             </div>
@@ -207,6 +332,28 @@ export default function OcrExtractor({ onBack }) {
               <option value="fra">French (Français)</option>
               <option value="deu">German (Deutsch)</option>
             </select>
+          </div>
+
+          <div className="space-y-3 rounded-2xl border border-white/10 bg-[#111827]/10 p-4">
+            <h4 className="text-xs font-bold uppercase tracking-wider text-slate-400">Text Cleanup</h4>
+            <label className="flex items-center justify-between gap-3 text-xs font-semibold text-slate-300">
+              <span>Clean extra spacing</span>
+              <input
+                type="checkbox"
+                checked={cleanSpacing}
+                onChange={(e) => setCleanSpacing(e.target.checked)}
+                className="h-4 w-4 rounded border-slate-700 accent-cyan-400"
+              />
+            </label>
+            <label className="flex items-center justify-between gap-3 text-xs font-semibold text-slate-300">
+              <span>Preserve line breaks</span>
+              <input
+                type="checkbox"
+                checked={preserveLineBreaks}
+                onChange={(e) => setPreserveLineBreaks(e.target.checked)}
+                className="h-4 w-4 rounded border-slate-700 accent-cyan-400"
+              />
+            </label>
           </div>
 
           {error && <div className="text-xs text-cyan-400 font-medium">{error}</div>}

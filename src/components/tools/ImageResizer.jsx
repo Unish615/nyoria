@@ -32,7 +32,7 @@ export default function ImageResizer({ onBack }) {
       setError("Please upload a valid image file.");
       return;
     }
-    
+
     setFile(selected);
     const url = URL.createObjectURL(selected);
     setPreview(url);
@@ -41,7 +41,7 @@ export default function ImageResizer({ onBack }) {
     // Get original dimensions
     const img = new Image();
     img.onload = () => {
-      setOriginalDimensions({ w: img.width, h: img.h });
+      setOriginalDimensions({ w: img.width, h: img.height });
       setWidth(img.width);
       setHeight(img.height);
     };
@@ -50,7 +50,7 @@ export default function ImageResizer({ onBack }) {
 
   const handleWidthChange = (val) => {
     setWidth(val);
-    if (lockRatio && originalDimensions.w > 0) {
+    if (val !== "" && lockRatio && originalDimensions.w > 0) {
       const ratio = originalDimensions.h / originalDimensions.w;
       setHeight(Math.round(val * ratio) || "");
     }
@@ -58,7 +58,7 @@ export default function ImageResizer({ onBack }) {
 
   const handleHeightChange = (val) => {
     setHeight(val);
-    if (lockRatio && originalDimensions.h > 0) {
+    if (val !== "" && lockRatio && originalDimensions.h > 0) {
       const ratio = originalDimensions.w / originalDimensions.h;
       setWidth(Math.round(val * ratio) || "");
     }
@@ -137,9 +137,9 @@ export default function ImageResizer({ onBack }) {
       description="Resize images using specific pixel heights/widths, overall percentage scales, or popular social media templates."
       onBack={onBack}
     >
-      <div className="grid gap-8 lg:grid-cols-3">
+      <div className="grid gap-8 lg:grid-cols-5">
         {/* Main Work Area */}
-        <div className="lg:col-span-2 space-y-6">
+        <div className="lg:col-span-3 space-y-6">
           {!file ? (
             <DropZone
               onFilesSelected={handleFiles}
@@ -209,13 +209,13 @@ export default function ImageResizer({ onBack }) {
         </div>
 
         {/* Options */}
-        <div className="p-6 rounded-3xl bg-[#111827]/70 border border-white/10 space-y-6">
+        <div className="lg:col-span-2 p-6 rounded-3xl bg-[#111827]/70 border border-white/10 space-y-6">
           <h3 className="text-base font-bold text-white flex items-center space-x-2">
             <Maximize2 className="w-5 h-5 text-cyan-400" />
             <span>Resize Settings</span>
           </h3>
 
-          <div className="flex rounded-xl border border-slate-700 p-0.5 bg-[#0B0F1A]">
+          <div className="flex gap-4 rounded-xl border border-slate-700 p-1.5 bg-[#0B0F1A]">
             {[
               { id: "dimensions", label: "Dimensions" },
               { id: "percentage", label: "Percentage" },
@@ -227,11 +227,10 @@ export default function ImageResizer({ onBack }) {
                   setResizeMode(m.id);
                   setResult(null);
                 }}
-                className={`w-full py-1.5 rounded-lg text-xs font-semibold transition-all ${
-                  resizeMode === m.id
-                    ? "bg-cyan-400 text-white"
-                    : "text-slate-400 hover:text-white"
-                }`}
+                className={`flex-1 py-2.5 rounded-xl text-xs font-semibold transition-all ${resizeMode === m.id
+                  ? "bg-cyan-400 text-white"
+                  : "text-slate-400 hover:text-white"
+                  }`}
               >
                 {m.label}
               </button>
@@ -246,7 +245,7 @@ export default function ImageResizer({ onBack }) {
                   <input
                     type="number"
                     value={width}
-                    onChange={(e) => handleWidthChange(parseInt(e.target.value) || "")}
+                    onChange={(e) => handleWidthChange(e.target.value === "" ? "" : parseInt(e.target.value))}
                     className="w-full px-4 py-2.5 rounded-xl border border-slate-700 bg-[#111827] text-white outline-none focus:border-cyan-400"
                   />
                 </div>
@@ -255,7 +254,7 @@ export default function ImageResizer({ onBack }) {
                   <input
                     type="number"
                     value={height}
-                    onChange={(e) => handleHeightChange(parseInt(e.target.value) || "")}
+                    onChange={(e) => handleHeightChange(e.target.value === "" ? "" : parseInt(e.target.value))}
                     className="w-full px-4 py-2.5 rounded-xl border border-slate-700 bg-[#111827] text-white outline-none focus:border-cyan-400"
                   />
                 </div>
@@ -304,11 +303,10 @@ export default function ImageResizer({ onBack }) {
                   <button
                     key={preset.name}
                     onClick={() => applyPreset(preset)}
-                    className={`text-left p-3 rounded-xl border transition-all text-xs font-medium ${
-                      selectedPreset?.name === preset.name
-                        ? "border-cyan-400 bg-cyan-400/10 text-white"
-                        : "border-slate-850 bg-[#111827]/30 text-slate-400 hover:border-slate-700 hover:text-white"
-                    }`}
+                    className={`text-left p-3 rounded-xl border transition-all text-xs font-medium ${selectedPreset?.name === preset.name
+                      ? "border-cyan-400 bg-cyan-400/10 text-white"
+                      : "border-slate-850 bg-[#111827]/30 text-slate-400 hover:border-slate-700 hover:text-white"
+                      }`}
                   >
                     <div>{preset.name}</div>
                     <div className="text-[10px] text-slate-400 mt-0.5">
