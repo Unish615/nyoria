@@ -112,14 +112,14 @@ const TOOLS = [
 export default function App() {
   const [activeTool, setActiveTool] = useState(null);
   const [isDark, setIsDark] = useState(() => {
-    const saved = localStorage.getItem("unish_dark_mode");
+    const saved = localStorage.getItem("nyoria_dark_mode");
     if (saved !== null) return saved === "true";
     return true;
   });
 
   useEffect(() => {
     document.documentElement.classList.toggle("dark", isDark);
-    localStorage.setItem("unish_dark_mode", String(isDark));
+    localStorage.setItem("nyoria_dark_mode", String(isDark));
   }, [isDark]);
 
   const renderActiveTool = () => {
@@ -188,7 +188,7 @@ export default function App() {
             <div className="flex flex-col">
               <div className="flex items-center gap-2">
                 <h1 className="text-lg font-extrabold tracking-tight sm:text-xl">
-                  UNISH Tools
+                  NYORIA Tools
                 </h1>
               </div>
               <p className="text-[10px] sm:text-xs inline-flex items-center gap-1.5">
@@ -221,7 +221,7 @@ export default function App() {
 
         {/* Footer */}
         <footer className="py-6 border-t border-slate-700 dark:border-slate-800 text-center text-xs text-slate-400">
-          <p>© {new Date().getFullYear()} UNISH Tools. All file processing runs locally in memory and is deleted instantly.</p>
+          <p>© {new Date().getFullYear()} NYORIA Tools. All file processing runs locally in memory and is deleted instantly.</p>
         </footer>
       </div>
     </div>

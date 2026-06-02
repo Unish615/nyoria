@@ -56,7 +56,7 @@ export default function PdfMerger({ onBack }) {
         for (let i = 1; i <= pageCount; i++) {
           const page = await pdf.getPage(i);
           const viewport = page.getViewport({ scale: 0.3 });
-          
+
           const canvas = document.createElement("canvas");
           const context = canvas.getContext("2d");
           canvas.width = viewport.width;
@@ -148,7 +148,7 @@ export default function PdfMerger({ onBack }) {
         spread: 60,
       });
 
-      const history = JSON.parse(localStorage.getItem("unish_history") || "[]");
+      const history = JSON.parse(localStorage.getItem("nyoria_history") || "[]");
       history.unshift({
         toolName: "PDF Merger",
         fileName: data.name,
@@ -156,7 +156,7 @@ export default function PdfMerger({ onBack }) {
         finalSize: data.size,
         timestamp: Date.now(),
       });
-      localStorage.setItem("unish_history", JSON.stringify(history.slice(0, 50)));
+      localStorage.setItem("nyoria_history", JSON.stringify(history.slice(0, 50)));
       window.dispatchEvent(new Event("history_updated"));
     } catch (e) {
       setError(e.message);
@@ -261,11 +261,10 @@ export default function PdfMerger({ onBack }) {
                   onDragEnter={() => (dragOverItemIndex.current = idx)}
                   onDragEnd={handlePageSort}
                   onDragOver={(e) => e.preventDefault()}
-                  className={`group relative overflow-hidden rounded-2xl border p-2 transition-all duration-300 ${
-                    page.selected
+                  className={`group relative overflow-hidden rounded-2xl border p-2 transition-all duration-300 ${page.selected
                       ? "border-cyan-400/50 bg-cyan-400/5 hover:border-cyan-400"
                       : "border-slate-350 bg-slate-950/10 dark:border-slate-800 dark:bg-[#111827]/10 opacity-60"
-                  } cursor-grab active:cursor-grabbing`}
+                    } cursor-grab active:cursor-grabbing`}
                 >
                   <div className="relative aspect-[3/4] overflow-hidden rounded-xl bg-[#111827] border border-slate-700 dark:border-slate-800">
                     <img

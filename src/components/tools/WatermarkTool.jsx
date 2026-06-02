@@ -8,11 +8,11 @@ export default function WatermarkTool({ onBack }) {
   const [image, setImage] = useState(null);
   const [imagePreview, setImagePreview] = useState("");
   const [watermarkType, setWatermarkType] = useState("text"); // text, logo
-  
+
   // Text Watermark Options
-  const [text, setText] = useState("UNISH Tools");
+  const [text, setText] = useState("NYORIA Tools");
   const [textColor, setTextColor] = useState("#ffffff");
-  
+
   // Logo Watermark Options
   const [logo, setLogo] = useState(null);
   const [logoPreview, setLogoPreview] = useState("");
@@ -97,7 +97,7 @@ export default function WatermarkTool({ onBack }) {
       });
 
       // Update history
-      const history = JSON.parse(localStorage.getItem("unish_history") || "[]");
+      const history = JSON.parse(localStorage.getItem("nyoria_history") || "[]");
       history.unshift({
         toolName: "Watermark Tool",
         fileName: data.name,
@@ -105,7 +105,7 @@ export default function WatermarkTool({ onBack }) {
         finalSize: data.size,
         timestamp: Date.now(),
       });
-      localStorage.setItem("unish_history", JSON.stringify(history.slice(0, 50)));
+      localStorage.setItem("nyoria_history", JSON.stringify(history.slice(0, 50)));
       window.dispatchEvent(new Event("history_updated"));
     } catch (e) {
       setError(e.message);
@@ -207,11 +207,10 @@ export default function WatermarkTool({ onBack }) {
                   setWatermarkType(m.id);
                   setResult(null);
                 }}
-                className={`w-full py-1.5 rounded-lg text-xs font-semibold flex items-center justify-center transition-all ${
-                  watermarkType === m.id
+                className={`w-full py-1.5 rounded-lg text-xs font-semibold flex items-center justify-center transition-all ${watermarkType === m.id
                     ? "bg-cyan-400 text-white"
                     : "text-slate-400 hover:text-white"
-                }`}
+                  }`}
               >
                 {m.icon}
                 {m.label}

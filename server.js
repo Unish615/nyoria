@@ -755,7 +755,7 @@ app.post("/api/watermark", upload.fields([{ name: "image", maxCount: 1 }, { name
     let compositeElement = null;
 
     if (type === "text") {
-      const text = req.body.text || "UNISH Tools";
+      const text = req.body.text || "NYORIA Tools";
       const color = req.body.textColor || "#ffffff";
       const size = Math.round(mainW * (sizePercent / 100) * 0.25); // auto scale font size
 
@@ -901,5 +901,5 @@ app.post("/api/ocr", upload.single("image"), async (req, res) => {
 });
 
 app.listen(PORT, () => {
-  console.log(`UNISH Tools backend listening on port ${PORT}`);
+  console.log(`NYORIA Tools backend listening on port ${PORT}`);
 });

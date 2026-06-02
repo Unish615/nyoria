@@ -97,7 +97,7 @@ export default function BgRemover({ onBack }) {
   const removeBackground = () => {
     if (!canvasRef.current || !imgRef.current) return;
     setIsProcessing(true);
-    
+
     setTimeout(() => {
       try {
         const canvas = canvasRef.current;
@@ -147,7 +147,7 @@ export default function BgRemover({ onBack }) {
         });
 
         // Add to history
-        const history = JSON.parse(localStorage.getItem("unish_history") || "[]");
+        const history = JSON.parse(localStorage.getItem("nyoria_history") || "[]");
         history.unshift({
           toolName: "Background Remover",
           fileName: file.name.replace(/\.[^/.]+$/, "") + "_no_bg.png",
@@ -155,7 +155,7 @@ export default function BgRemover({ onBack }) {
           finalSize: Math.round(dataUrl.length * 0.75), // Estimate base64 bytes
           timestamp: Date.now(),
         });
-        localStorage.setItem("unish_history", JSON.stringify(history.slice(0, 50)));
+        localStorage.setItem("nyoria_history", JSON.stringify(history.slice(0, 50)));
         window.dispatchEvent(new Event("history_updated"));
       } catch (err) {
         setError("Background extraction failed. " + err.message);
@@ -205,12 +205,11 @@ export default function BgRemover({ onBack }) {
                 <canvas
                   ref={canvasRef}
                   onClick={handleCanvasClick}
-                  className={`max-h-96 object-contain rounded-xl cursor-crosshair border ${
-                    resultUrl ? "bg-[url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2216%22 height=%2216%22 viewBox=%220 0 8 8%22><rect width=%224%22 height=%224%22 fill=%22%23ccc%22/><rect x=%224%22 y=%224%22 width=%224%22 height=%224%22 fill=%22%23ccc%22/><rect x=%224%22 width=%224%22 height=%224%22 fill=%22%23fff%22/><rect y=%224%22 width=%224%22 height=%224%22 fill=%22%23fff%22/></svg>')] bg-repeat" : "border-slate-800"
-                  }`}
+                  className={`max-h-96 object-contain rounded-xl cursor-crosshair border ${resultUrl ? "bg-[url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2216%22 height=%2216%22 viewBox=%220 0 8 8%22><rect width=%224%22 height=%224%22 fill=%22%23ccc%22/><rect x=%224%22 y=%224%22 width=%224%22 height=%224%22 fill=%22%23ccc%22/><rect x=%224%22 width=%224%22 height=%224%22 fill=%22%23fff%22/><rect y=%224%22 width=%224%22 height=%224%22 fill=%22%23fff%22/></svg>')] bg-repeat" : "border-slate-800"
+                    }`}
                   style={{ display: resultUrl ? "block" : "none" }}
                 />
-                
+
                 {!resultUrl && (
                   <img
                     ref={imgRef}

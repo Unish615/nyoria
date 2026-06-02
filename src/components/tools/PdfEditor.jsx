@@ -817,7 +817,7 @@ export default function PdfEditor({ onBack }) {
             link.remove();
             URL.revokeObjectURL(url);
 
-            const history = JSON.parse(localStorage.getItem("unish_history") || "[]");
+            const history = JSON.parse(localStorage.getItem("nyoria_history") || "[]");
             history.unshift({
                 toolName: "PDF Editor",
                 fileName: link.download,
@@ -825,7 +825,7 @@ export default function PdfEditor({ onBack }) {
                 finalSize: blob.size,
                 timestamp: Date.now(),
             });
-            localStorage.setItem("unish_history", JSON.stringify(history.slice(0, 50)));
+            localStorage.setItem("nyoria_history", JSON.stringify(history.slice(0, 50)));
             window.dispatchEvent(new Event("history_updated"));
         } catch (err) {
             setErrorMessage(err.message || "Failed to export the PDF.");

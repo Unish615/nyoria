@@ -141,7 +141,7 @@ export default function ImageCompressor({ onBack }) {
       });
 
       // Update history
-      const history = JSON.parse(localStorage.getItem("unish_history") || "[]");
+      const history = JSON.parse(localStorage.getItem("nyoria_history") || "[]");
       processedResults.forEach((r) => {
         history.unshift({
           toolName: "Custom Size Image Compressor",
@@ -151,7 +151,7 @@ export default function ImageCompressor({ onBack }) {
           timestamp: Date.now(),
         });
       });
-      localStorage.setItem("unish_history", JSON.stringify(history.slice(0, 50)));
+      localStorage.setItem("nyoria_history", JSON.stringify(history.slice(0, 50)));
       window.dispatchEvent(new Event("history_updated"));
     } catch (e) {
       setError(e.message);
@@ -383,8 +383,8 @@ export default function ImageCompressor({ onBack }) {
                     setResults([]);
                   }}
                   className={`p-3 rounded-xl border text-left flex flex-col transition ${mode === m.id
-                      ? "border-cyan-400 bg-cyan-400/10 text-white"
-                      : "border-slate-800 bg-[#0B0F1A]/20 text-slate-400 hover:border-slate-700 hover:text-white"
+                    ? "border-cyan-400 bg-cyan-400/10 text-white"
+                    : "border-slate-800 bg-[#0B0F1A]/20 text-slate-400 hover:border-slate-700 hover:text-white"
                     }`}
                 >
                   <span className="font-bold">{m.label}</span>

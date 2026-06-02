@@ -84,7 +84,7 @@ export default function ImageToPdf({ onBack }) {
         spread: 60,
       });
 
-      const history = JSON.parse(localStorage.getItem("unish_history") || "[]");
+      const history = JSON.parse(localStorage.getItem("nyoria_history") || "[]");
       history.unshift({
         toolName: "Image to PDF",
         fileName: data.name,
@@ -92,7 +92,7 @@ export default function ImageToPdf({ onBack }) {
         finalSize: data.size,
         timestamp: Date.now(),
       });
-      localStorage.setItem("unish_history", JSON.stringify(history.slice(0, 50)));
+      localStorage.setItem("nyoria_history", JSON.stringify(history.slice(0, 50)));
       window.dispatchEvent(new Event("history_updated"));
     } catch (e) {
       setError(e.message);
@@ -229,8 +229,8 @@ export default function ImageToPdf({ onBack }) {
                     key={o}
                     onClick={() => setOrientation(o)}
                     className={`py-2 rounded-xl text-xs font-bold capitalize transition-all ${orientation === o
-                        ? "bg-cyan-400 text-white shadow-lg"
-                        : "bg-slate-800 text-slate-400 hover:bg-slate-750"
+                      ? "bg-cyan-400 text-white shadow-lg"
+                      : "bg-slate-800 text-slate-400 hover:bg-slate-750"
                       }`}
                   >
                     {o}

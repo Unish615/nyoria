@@ -9,7 +9,7 @@ export default function QrGenerator({ onBack }) {
 
   // Inputs
   const [url, setUrl] = useState("https://google.com");
-  const [text, setText] = useState("Hello UNISH!");
+  const [text, setText] = useState("Hello NYORIA!");
 
   // WiFi Inputs
   const [ssid, setSsid] = useState("");
@@ -121,7 +121,7 @@ export default function QrGenerator({ onBack }) {
     link.click();
 
     // Log to history
-    const history = JSON.parse(localStorage.getItem("unish_history") || "[]");
+    const history = JSON.parse(localStorage.getItem("nyoria_history") || "[]");
     history.unshift({
       toolName: "QR Generator",
       fileName: `qrcode-${Date.now()}.png`,
@@ -129,7 +129,7 @@ export default function QrGenerator({ onBack }) {
       finalSize: qrUrl.length,
       timestamp: Date.now(),
     });
-    localStorage.setItem("unish_history", JSON.stringify(history.slice(0, 50)));
+    localStorage.setItem("nyoria_history", JSON.stringify(history.slice(0, 50)));
     window.dispatchEvent(new Event("history_updated"));
   };
 

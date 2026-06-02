@@ -101,7 +101,7 @@ export default function ImageMerger({ onBack }) {
       });
 
       // Update local storage history
-      const history = JSON.parse(localStorage.getItem("unish_history") || "[]");
+      const history = JSON.parse(localStorage.getItem("nyoria_history") || "[]");
       history.unshift({
         toolName: "Image Merger",
         fileName: data.name,
@@ -109,7 +109,7 @@ export default function ImageMerger({ onBack }) {
         finalSize: data.size,
         timestamp: Date.now(),
       });
-      localStorage.setItem("unish_history", JSON.stringify(history.slice(0, 50)));
+      localStorage.setItem("nyoria_history", JSON.stringify(history.slice(0, 50)));
       window.dispatchEvent(new Event("history_updated"));
     } catch (e) {
       setError(e.message);

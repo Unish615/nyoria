@@ -31,11 +31,11 @@ export default function Dashboard({ tools, onSelectTool }) {
 
   const loadData = () => {
     // Load Favorites
-    const favs = JSON.parse(localStorage.getItem("unish_favorites") || "[]");
+    const favs = JSON.parse(localStorage.getItem("nyoria_favorites") || "[]");
     setFavorites(favs);
 
     // Load History
-    const hist = JSON.parse(localStorage.getItem("unish_history") || "[]");
+    const hist = JSON.parse(localStorage.getItem("nyoria_history") || "[]");
     setHistory(hist);
 
     // Calculate Stats
@@ -76,7 +76,7 @@ export default function Dashboard({ tools, onSelectTool }) {
   };
 
   const clearHistory = () => {
-    localStorage.setItem("unish_history", "[]");
+    localStorage.setItem("nyoria_history", "[]");
     loadData();
   };
 
@@ -98,7 +98,7 @@ export default function Dashboard({ tools, onSelectTool }) {
         <div className="md:col-span-2 flex flex-col justify-between p-6 rounded-3xl bg-gradient-to-br from-blue-500/10 via-cyan-500/5 to-transparent border border-blue-500/20 shadow-glass backdrop-blur-xl">
           <div className="space-y-2">
             <h2 className="text-2xl font-bold text-[#E5E7EB] dark:text-white sm:text-3xl">
-              UNISH Tools
+              NYORIA Tools
             </h2>
             <p className="text-sm text-slate-600 dark:text-slate-400">
               The next-generation, high-performance toolkit for processing your images, PDFs, and files with absolute privacy.

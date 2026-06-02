@@ -301,7 +301,7 @@ export default function FormatConverter({ onBack }) {
         spread: 50,
       });
 
-      const history = JSON.parse(localStorage.getItem("unish_history") || "[]");
+      const history = JSON.parse(localStorage.getItem("nyoria_history") || "[]");
       converted.forEach((result) => {
         history.unshift({
           toolName: "Format Converter",
@@ -311,7 +311,7 @@ export default function FormatConverter({ onBack }) {
           timestamp: Date.now(),
         });
       });
-      localStorage.setItem("unish_history", JSON.stringify(history.slice(0, 50)));
+      localStorage.setItem("nyoria_history", JSON.stringify(history.slice(0, 50)));
       window.dispatchEvent(new Event("history_updated"));
     } catch (e) {
       setError(e.message);
@@ -480,11 +480,10 @@ export default function FormatConverter({ onBack }) {
                     setRenderPreset(value);
                     setResults([]);
                   }}
-                  className={`rounded-xl border px-2 py-2 text-xs font-bold transition ${
-                    renderPreset === value
+                  className={`rounded-xl border px-2 py-2 text-xs font-bold transition ${renderPreset === value
                       ? "border-cyan-400 bg-cyan-400/15 text-cyan-200"
                       : "border-slate-700 bg-[#111827] text-slate-300 hover:border-cyan-400/60"
-                  }`}
+                    }`}
                 >
                   {preset.label}
                 </button>

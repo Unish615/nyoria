@@ -13,13 +13,13 @@ export default function ToolWrapper({
   const [panelHeight, setPanelHeight] = useState("520");
 
   useEffect(() => {
-    const favorites = JSON.parse(localStorage.getItem("unish_favorites") || "[]");
+    const favorites = JSON.parse(localStorage.getItem("nyoria_favorites") || "[]");
     setIsFavorite(favorites.includes(id));
   }, [id]);
 
   const toggleFavorite = (e) => {
     e.stopPropagation();
-    let favorites = JSON.parse(localStorage.getItem("unish_favorites") || "[]");
+    let favorites = JSON.parse(localStorage.getItem("nyoria_favorites") || "[]");
     if (favorites.includes(id)) {
       favorites = favorites.filter((f) => f !== id);
       setIsFavorite(false);
@@ -27,7 +27,7 @@ export default function ToolWrapper({
       favorites.push(id);
       setIsFavorite(true);
     }
-    localStorage.setItem("unish_favorites", JSON.stringify(favorites));
+    localStorage.setItem("nyoria_favorites", JSON.stringify(favorites));
     // Emit a custom event to notify Dashboard to refresh stats
     window.dispatchEvent(new Event("favorites_updated"));
   };
@@ -59,11 +59,10 @@ export default function ToolWrapper({
               </h2>
               <button
                 onClick={toggleFavorite}
-                className={`p-1.5 rounded-lg border transition ${
-                  isFavorite
+                className={`p-1.5 rounded-lg border transition ${isFavorite
                     ? "border-amber-400 bg-amber-400/10 text-amber-500 hover:bg-amber-400/20"
                     : "border-slate-700/80 bg-slate-900/60 text-slate-400 hover:text-amber-500 dark:border-white/10 dark:bg-[#111827]/10 hover:bg-slate-800 dark:hover:bg-[#111827]/10"
-                }`}
+                  }`}
                 title={isFavorite ? "Remove from Favorites" : "Add to Favorites"}
               >
                 <Star className="w-4 h-4" fill={isFavorite ? "currentColor" : "none"} />

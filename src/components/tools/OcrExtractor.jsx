@@ -102,7 +102,7 @@ export default function OcrExtractor({ onBack }) {
       });
 
       // Update history
-      const history = JSON.parse(localStorage.getItem("unish_history") || "[]");
+      const history = JSON.parse(localStorage.getItem("nyoria_history") || "[]");
       history.unshift({
         toolName: "OCR Text Extractor",
         fileName: file.name.replace(/\.[^/.]+$/, "") + "_extracted.txt",
@@ -110,7 +110,7 @@ export default function OcrExtractor({ onBack }) {
         finalSize: (data.text || "").length,
         timestamp: Date.now(),
       });
-      localStorage.setItem("unish_history", JSON.stringify(history.slice(0, 50)));
+      localStorage.setItem("nyoria_history", JSON.stringify(history.slice(0, 50)));
       window.dispatchEvent(new Event("history_updated"));
     } catch (e) {
       setError(e.message);
