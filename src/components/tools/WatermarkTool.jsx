@@ -4,6 +4,7 @@ import ToolWrapper from "../ToolWrapper";
 import { Download, RefreshCw, FileSignature, Check, Type, Image } from "lucide-react";
 import confetti from "canvas-confetti";
 import { apiRequest } from "../../utils/api";
+import { getStoredArray } from "../../utils/storage";
 
 export default function WatermarkTool({ onBack }) {
   const [image, setImage] = useState(null);
@@ -91,7 +92,7 @@ export default function WatermarkTool({ onBack }) {
       });
 
       // Update history
-      const history = JSON.parse(localStorage.getItem("nyoria_history") || "[]");
+      const history = getStoredArray("nyoria_history");
       history.unshift({
         toolName: "Watermark Tool",
         fileName: data.name,

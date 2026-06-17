@@ -17,6 +17,7 @@ import {
   QrCode,
   Flame,
 } from "lucide-react";
+import { getStoredArray } from "../utils/storage";
 
 export default function Dashboard({ tools, onSelectTool }) {
   const [search, setSearch] = useState("");
@@ -31,11 +32,11 @@ export default function Dashboard({ tools, onSelectTool }) {
 
   const loadData = () => {
     // Load Favorites
-    const favs = JSON.parse(localStorage.getItem("nyoria_favorites") || "[]");
+    const favs = getStoredArray("nyoria_favorites");
     setFavorites(favs);
 
     // Load History
-    const hist = JSON.parse(localStorage.getItem("nyoria_history") || "[]");
+    const hist = getStoredArray("nyoria_history");
     setHistory(hist);
 
     // Calculate Stats

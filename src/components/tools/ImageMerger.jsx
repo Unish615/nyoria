@@ -4,6 +4,7 @@ import ToolWrapper from "../ToolWrapper";
 import { Download, RefreshCw, Layers, Move, Plus } from "lucide-react";
 import confetti from "canvas-confetti";
 import { apiRequest } from "../../utils/api";
+import { getStoredArray } from "../../utils/storage";
 
 export default function ImageMerger({ onBack }) {
   const [images, setImages] = useState([]);
@@ -95,7 +96,7 @@ export default function ImageMerger({ onBack }) {
       });
 
       // Update local storage history
-      const history = JSON.parse(localStorage.getItem("nyoria_history") || "[]");
+      const history = getStoredArray("nyoria_history");
       history.unshift({
         toolName: "Image Merger",
         fileName: data.name,

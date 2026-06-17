@@ -4,6 +4,7 @@ import ToolWrapper from "../ToolWrapper";
 import { Download, RefreshCw, Layers, Move, Check, Sparkles } from "lucide-react";
 import confetti from "canvas-confetti";
 import { apiRequest } from "../../utils/api";
+import { getStoredArray } from "../../utils/storage";
 
 export default function ScreenshotToPdf({ onBack }) {
   const [images, setImages] = useState([]);
@@ -75,7 +76,7 @@ export default function ScreenshotToPdf({ onBack }) {
       });
 
       // Update history
-      const history = JSON.parse(localStorage.getItem("nyoria_history") || "[]");
+      const history = getStoredArray("nyoria_history");
       history.unshift({
         toolName: "Screenshot to PDF",
         fileName: data.name,

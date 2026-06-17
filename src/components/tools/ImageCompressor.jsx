@@ -17,6 +17,7 @@ import {
 } from "lucide-react";
 import confetti from "canvas-confetti";
 import { apiRequest } from "../../utils/api";
+import { getStoredArray } from "../../utils/storage";
 
 export default function ImageCompressor({ onBack }) {
   const [files, setFiles] = useState([]);
@@ -135,7 +136,7 @@ export default function ImageCompressor({ onBack }) {
       });
 
       // Update history
-      const history = JSON.parse(localStorage.getItem("nyoria_history") || "[]");
+      const history = getStoredArray("nyoria_history");
       processedResults.forEach((r) => {
         history.unshift({
           toolName: "Custom Size Image Compressor",

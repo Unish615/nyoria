@@ -4,6 +4,7 @@ import ToolWrapper from "../ToolWrapper";
 import { Download, RefreshCw, Maximize2, Check } from "lucide-react";
 import confetti from "canvas-confetti";
 import { apiRequest } from "../../utils/api";
+import { getStoredArray } from "../../utils/storage";
 
 const SOCIAL_PRESETS = [
   { name: "Instagram Square", width: 1080, height: 1080 },
@@ -100,7 +101,7 @@ export default function ImageResizer({ onBack }) {
         spread: 40,
       });
 
-      const history = JSON.parse(localStorage.getItem("nyoria_history") || "[]");
+      const history = getStoredArray("nyoria_history");
       history.unshift({
         toolName: "Image Resizer",
         fileName: data.name,

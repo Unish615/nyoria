@@ -27,6 +27,22 @@ const upload = multer({
   limits: { fileSize: 100 * 1024 * 1024 },
 });
 
+app.get("/api/health", (req, res) => {
+  res.json({ ok: true, port: Number(PORT), host: HOST });
+});
+
+function parseJsonArrayField(value, fallback = []) {
+  if (!value) return fallback;
+  if (Array.isArray(value)) return value;
+
+  try {
+    const parsed = JSON.parse(value);
+    return Array.isArray(parsed) ? parsed : fallback;
+  } catch (error) {
+    return fallback;
+  }
+}
+
 function decodeRawPng(buffer) {
   const png = PNG.sync.read(buffer);
   const channels = png.alpha ? 4 : 3;
@@ -170,14 +186,10 @@ app.post("/api/compress-image", upload.array("images"), async (req, res) => {
     const stripMetadata = req.body.stripMetadata === "true";
     const preserveTransparency = req.body.preserveTransparency === "true";
 
-    let targetSizes = [];
-    if (req.body.targetSizes) {
-      try {
-        targetSizes = JSON.parse(req.body.targetSizes);
-      } catch (e) {
-        targetSizes = [req.body.targetSizes];
-      }
-    } else if (req.body.targetSize) {
+    let targetSizes = parseJsonArrayField(req.body.targetSizes);
+    if (targetSizes.length === 0 && req.body.targetSizes) {
+      targetSizes = [req.body.targetSizes];
+    } else if (targetSizes.length === 0 && req.body.targetSize) {
       targetSizes = [req.body.targetSize];
     }
 
@@ -368,7 +380,7 @@ app.post("/api/merge-pdf", upload.array("pdfs"), async (req, res) => {
       return res.status(400).json({ error: "No PDF files uploaded" });
     }
 
-    const pageOrder = req.body.pageOrder ? JSON.parse(req.body.pageOrder) : null;
+    const pageOrder = parseJsonArrayField(req.body.pageOrder, null);
     const mergedPdf = await PDFDocument.create();
     const pdfDocs = [];
 
@@ -842,6 +854,19 @@ app.use((err, req, res, next) => {
   res.status(err.status || 500).json({
     error: err.message || "Internal server error",
   });
+});
+
+httpServer.on("error", (error) => {
+  if (error.code === "EADDRINUSE") {
+    console.error(`Port ${PORT} is already in use on ${HOST}.`);
+    console.error(`Run: lsof -nP -iTCP:${PORT} -sTCP:LISTEN`);
+    console.error("Then stop the listed process, or start with another port:");
+    console.error("PORT=5002 npm run dev");
+    process.exit(1);
+  }
+
+  console.error("Server failed to start:", error);
+  process.exit(1);
 });
 
 httpServer.listen(PORT, HOST, () => {

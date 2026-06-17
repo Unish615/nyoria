@@ -5,6 +5,7 @@ import { Download, RefreshCw, FileText, Check, Copy, FileCode, Search, Trash2 } 
 import confetti from "canvas-confetti";
 import { jsPDF } from "jspdf";
 import { apiRequest } from "../../utils/api";
+import { getStoredArray } from "../../utils/storage";
 
 export default function OcrExtractor({ onBack }) {
   const [file, setFile] = useState(null);
@@ -96,7 +97,7 @@ export default function OcrExtractor({ onBack }) {
       });
 
       // Update history
-      const history = JSON.parse(localStorage.getItem("nyoria_history") || "[]");
+      const history = getStoredArray("nyoria_history");
       history.unshift({
         toolName: "OCR Text Extractor",
         fileName: file.name.replace(/\.[^/.]+$/, "") + "_extracted.txt",

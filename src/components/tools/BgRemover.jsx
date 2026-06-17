@@ -3,6 +3,7 @@ import DropZone from "../DropZone";
 import ToolWrapper from "../ToolWrapper";
 import { Download, RefreshCw, Scissors, Check, Sliders, Pipette } from "lucide-react";
 import confetti from "canvas-confetti";
+import { getStoredArray } from "../../utils/storage";
 
 export default function BgRemover({ onBack }) {
   const [file, setFile] = useState(null);
@@ -147,7 +148,7 @@ export default function BgRemover({ onBack }) {
         });
 
         // Add to history
-        const history = JSON.parse(localStorage.getItem("nyoria_history") || "[]");
+        const history = getStoredArray("nyoria_history");
         history.unshift({
           toolName: "Background Remover",
           fileName: file.name.replace(/\.[^/.]+$/, "") + "_no_bg.png",

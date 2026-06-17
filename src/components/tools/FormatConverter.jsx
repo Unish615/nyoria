@@ -15,6 +15,7 @@ import confetti from "canvas-confetti";
 import { getDocument, GlobalWorkerOptions } from "pdfjs-dist/legacy/build/pdf";
 import pdfjsWorkerUrl from "pdfjs-dist/build/pdf.worker.min.mjs?url";
 import { apiRequest } from "../../utils/api";
+import { getStoredArray } from "../../utils/storage";
 
 GlobalWorkerOptions.workerSrc = pdfjsWorkerUrl;
 
@@ -295,7 +296,7 @@ export default function FormatConverter({ onBack }) {
         spread: 50,
       });
 
-      const history = JSON.parse(localStorage.getItem("nyoria_history") || "[]");
+      const history = getStoredArray("nyoria_history");
       converted.forEach((result) => {
         history.unshift({
           toolName: "Format Converter",

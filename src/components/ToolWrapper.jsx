@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { ArrowLeft, Maximize2, Star } from "lucide-react";
+import { getStoredArray } from "../utils/storage";
 
 export default function ToolWrapper({
   title,
@@ -13,13 +14,13 @@ export default function ToolWrapper({
   const [panelHeight, setPanelHeight] = useState("520");
 
   useEffect(() => {
-    const favorites = JSON.parse(localStorage.getItem("nyoria_favorites") || "[]");
+    const favorites = getStoredArray("nyoria_favorites");
     setIsFavorite(favorites.includes(id));
   }, [id]);
 
   const toggleFavorite = (e) => {
     e.stopPropagation();
-    let favorites = JSON.parse(localStorage.getItem("nyoria_favorites") || "[]");
+    let favorites = getStoredArray("nyoria_favorites");
     if (favorites.includes(id)) {
       favorites = favorites.filter((f) => f !== id);
       setIsFavorite(false);

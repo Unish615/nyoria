@@ -3,6 +3,7 @@ import ToolWrapper from "../ToolWrapper";
 import { Download, QrCode, Check, RefreshCw, Copy } from "lucide-react";
 import QRCode from "qrcode";
 import confetti from "canvas-confetti";
+import { getStoredArray } from "../../utils/storage";
 
 export default function QrGenerator({ onBack }) {
   const [qrType, setQrType] = useState("url"); // url, text, wifi, contact, esewa
@@ -121,7 +122,7 @@ export default function QrGenerator({ onBack }) {
     link.click();
 
     // Log to history
-    const history = JSON.parse(localStorage.getItem("nyoria_history") || "[]");
+    const history = getStoredArray("nyoria_history");
     history.unshift({
       toolName: "QR Generator",
       fileName: `qrcode-${Date.now()}.png`,

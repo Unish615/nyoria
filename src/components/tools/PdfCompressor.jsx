@@ -4,6 +4,7 @@ import ToolWrapper from "../ToolWrapper";
 import { Download, RefreshCw, FileMinus, Info, Check } from "lucide-react";
 import confetti from "canvas-confetti";
 import { apiRequest } from "../../utils/api";
+import { getStoredArray } from "../../utils/storage";
 
 export default function PdfCompressor({ onBack }) {
   const [file, setFile] = useState(null);
@@ -46,7 +47,7 @@ export default function PdfCompressor({ onBack }) {
         spread: 60,
       });
 
-      const history = JSON.parse(localStorage.getItem("nyoria_history") || "[]");
+      const history = getStoredArray("nyoria_history");
       history.unshift({
         toolName: "PDF Compressor",
         fileName: data.name,

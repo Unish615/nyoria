@@ -4,6 +4,7 @@ import ToolWrapper from "../ToolWrapper";
 import { Download, RefreshCw, Layers, Move, BookOpen, Trash2 } from "lucide-react";
 import confetti from "canvas-confetti";
 import { apiRequest } from "../../utils/api";
+import { getStoredArray } from "../../utils/storage";
 
 // Helper: Load PDF.js dynamically
 const loadPdfJs = () => {
@@ -142,7 +143,7 @@ export default function PdfMerger({ onBack }) {
         spread: 60,
       });
 
-      const history = JSON.parse(localStorage.getItem("nyoria_history") || "[]");
+      const history = getStoredArray("nyoria_history");
       history.unshift({
         toolName: "PDF Merger",
         fileName: data.name,

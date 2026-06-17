@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { PDFDocument } from "pdf-lib";
 import { getDocument, GlobalWorkerOptions } from "pdfjs-dist/legacy/build/pdf";
 import pdfjsWorkerUrl from "pdfjs-dist/build/pdf.worker.min.mjs?url";
+import { getStoredArray } from "../../utils/storage";
 import {
     ChevronLeft,
     ChevronRight,
@@ -817,7 +818,7 @@ export default function PdfEditor({ onBack }) {
             link.remove();
             URL.revokeObjectURL(url);
 
-            const history = JSON.parse(localStorage.getItem("nyoria_history") || "[]");
+            const history = getStoredArray("nyoria_history");
             history.unshift({
                 toolName: "PDF Editor",
                 fileName: link.download,
