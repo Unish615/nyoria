@@ -3,6 +3,7 @@ import DropZone from "../DropZone";
 import ToolWrapper from "../ToolWrapper";
 import { Download, RefreshCw, FileText, Move, Plus } from "lucide-react";
 import confetti from "canvas-confetti";
+import { apiRequest } from "../../utils/api";
 
 export default function ImageToPdf({ onBack }) {
   const [images, setImages] = useState([]);
@@ -66,17 +67,10 @@ export default function ImageToPdf({ onBack }) {
     formData.append("quality", quality);
 
     try {
-      const response = await fetch("/api/image-to-pdf", {
+      const data = await apiRequest("/api/image-to-pdf", {
         method: "POST",
         body: formData,
       });
-
-      if (!response.ok) {
-        const errJson = await response.json();
-        throw new Error(errJson.error || "Failed to convert images to PDF");
-      }
-
-      const data = await response.json();
       setResult(data);
 
       confetti({

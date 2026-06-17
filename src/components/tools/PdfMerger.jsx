@@ -3,6 +3,7 @@ import DropZone from "../DropZone";
 import ToolWrapper from "../ToolWrapper";
 import { Download, RefreshCw, Layers, Move, BookOpen, Trash2 } from "lucide-react";
 import confetti from "canvas-confetti";
+import { apiRequest } from "../../utils/api";
 
 // Helper: Load PDF.js dynamically
 const loadPdfJs = () => {
@@ -130,17 +131,10 @@ export default function PdfMerger({ onBack }) {
     formData.append("pageOrder", JSON.stringify(orderMap));
 
     try {
-      const response = await fetch("/api/merge-pdf", {
+      const data = await apiRequest("/api/merge-pdf", {
         method: "POST",
         body: formData,
       });
-
-      if (!response.ok) {
-        const errJson = await response.json();
-        throw new Error(errJson.error || "Failed to merge PDF files");
-      }
-
-      const data = await response.json();
       setResult(data);
 
       confetti({

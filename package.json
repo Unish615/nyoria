@@ -4,10 +4,11 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
-    "dev": "concurrently \"vite\" \"nodemon server.js\"",
-    "server": "node server.js",
+    "dev": "nodemon server.js",
+    "server": "NODE_ENV=production node server.js",
     "build": "vite build",
-    "preview": "vite preview"
+    "start": "npm run build && NODE_ENV=production node server.js",
+    "preview": "npm run build && NODE_ENV=production node server.js"
   },
   "dependencies": {
     "archiver": "^8.0.0",

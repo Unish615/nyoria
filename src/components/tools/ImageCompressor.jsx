@@ -16,6 +16,7 @@ import {
   Trash2,
 } from "lucide-react";
 import confetti from "canvas-confetti";
+import { apiRequest } from "../../utils/api";
 
 export default function ImageCompressor({ onBack }) {
   const [files, setFiles] = useState([]);
@@ -109,17 +110,10 @@ export default function ImageCompressor({ onBack }) {
     formData.append("preserveTransparency", preserveTransparency ? "true" : "false");
 
     try {
-      const response = await fetch("/api/compress-image", {
+      const data = await apiRequest("/api/compress-image", {
         method: "POST",
         body: formData,
       });
-
-      if (!response.ok) {
-        const errJson = await response.json();
-        throw new Error(errJson.error || "Failed to compress images");
-      }
-
-      const data = await response.json();
 
       // Merge customized output file names if present
       const processedResults = data.results.map((r, idx) => {

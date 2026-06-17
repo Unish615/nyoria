@@ -1,0 +1,155 @@
+
+> image-to-pdf-modern@1.0.0 dev
+> concurrently "vite" "nodemon server.js"
+
+[1] [33m[nodemon] 3.1.14[39m
+[1] [33m[nodemon] to restart at any time, enter `rs`[39m
+[1] [33m[nodemon] watching path(s): *.*[39m
+[1] [33m[nodemon] watching extensions: js,mjs,cjs,json[39m
+[1] [32m[nodemon] starting `node server.js`[39m
+[0] 
+[0]   VITE v5.4.21  ready in 250 ms
+[0] 
+[0]   ➜  Local:   http://localhost:5173/
+[0]   ➜  Network: use --host to expose
+[1] NYORIA Tools backend listening on http://localhost:5001
+[1] [31m[nodemon] app crashed - waiting for file changes before starting...[39m
+[1] [32m[nodemon] restarting due to changes...[39m
+[1] [32m[nodemon] starting `node server.js`[39m
+[1] NYORIA Tools backend listening on http://localhost:5001
+[1] [32m[nodemon] restarting due to changes...[39m
+[1] [32m[nodemon] starting `node server.js`[39m
+[1] NYORIA Tools running on http://localhost:5001
+[1] [32m[nodemon] restarting due to changes...[39m
+[1] [32m[nodemon] restarting due to changes...[39m
+[1] [32m[nodemon] restarting due to changes...[39m
+[1] [32m[nodemon] restarting due to changes...[39m
+[1] [32m[nodemon] restarting due to changes...[39m
+[1] [32m[nodemon] starting `node server.js`[39m
+[1] [32m[nodemon] restarting due to changes...[39m
+[1] [32m[nodemon] restarting due to changes...[39m
+[1] [32m[nodemon] restarting due to changes...[39m
+[1] [32m[nodemon] restarting due to changes...[39m
+[1] [32m[nodemon] restarting due to changes...[39m
+[1] [32m[nodemon] starting `node server.js`[39m
+[1] [32m[nodemon] restarting due to changes...[39m
+[1] [32m[nodemon] restarting due to changes...[39m
+[1] [32m[nodemon] restarting due to changes...[39m
+[1] [32m[nodemon] restarting due to changes...[39m
+[1] [32m[nodemon] starting `node server.js`[39m
+[1] NYORIA Tools running on http://localhost:5001
+[1] [32m[nodemon] restarting due to changes...[39m
+[1] [32m[nodemon] starting `node server.js`[39m
+[1] NYORIA Tools running on http://localhost:5001
+[1] [32m[nodemon] restarting due to changes...[39m
+[1] [32m[nodemon] starting `node server.js`[39m
+[0] 11:56:57 AM [vite] page reload src/utils/api.js
+[1] NYORIA Tools running on http://localhost:5001
+[0] 11:57:04 AM [vite] hmr update /src/components/tools/PdfCompressor.jsx, /src/index.css
+[0] 11:57:12 AM [vite] hmr update /src/components/tools/WatermarkTool.jsx, /src/index.css
+[0] 11:57:34 AM [vite] hmr update /src/components/tools/ImageCompressor.jsx, /src/index.css
+[0] 11:58:10 AM [vite] hmr update /src/components/tools/OcrExtractor.jsx, /src/index.css
+[0] 11:58:17 AM [vite] page reload src/components/tools/ScreenshotToPdf.jsx
+[0] 11:58:25 AM [vite] hmr update /src/components/tools/ImageResizer.jsx, /src/index.css
+[0] 11:58:32 AM [vite] hmr update /src/components/tools/PdfMerger.jsx, /src/index.css
+[0] 11:58:40 AM [vite] hmr update /src/components/tools/ImageMerger.jsx, /src/index.css
+[0] 11:58:47 AM [vite] hmr update /src/components/tools/ImageToPdf.jsx, /src/index.css
+[0] 11:58:55 AM [vite] hmr update /src/components/tools/FormatConverter.jsx, /src/index.css
+[1] [32m[nodemon] restarting due to changes...[39m
+[1] [32m[nodemon] starting `node server.js`[39m
+[1] NYORIA Tools running on http://localhost:5001
+[1] [32m[nodemon] restarting due to changes...[39m
+[1] [32m[nodemon] restarting due to changes...[39m
+[1] [32m[nodemon] restarting due to changes...[39m
+[1] [32m[nodemon] restarting due to changes...[39m
+[1] [32m[nodemon] restarting due to changes...[39m
+[1] [32m[nodemon] starting `node server.js`[39m
+[1] NYORIA Tools running on http://localhost:5001
+[1] [32m[nodemon] restarting due to changes...[39m
+[1] [32m[nodemon] restarting due to changes...[39m
+[1] [32m[nodemon] restarting due to changes...[39m
+[1] [32m[nodemon] restarting due to changes...[39m
+[1] [32m[nodemon] restarting due to changes...[39m
+[1] [32m[nodemon] starting `node server.js`[39m
+[1] NYORIA Tools running on http://localhost:5001
+[1] [32m[nodemon] restarting due to changes...[39m
+[1] [32m[nodemon] restarting due to changes...[39m
+[1] [32m[nodemon] restarting due to changes...[39m
+[1] [32m[nodemon] restarting due to changes...[39m
+[1] [32m[nodemon] restarting due to changes...[39m
+[1] [32m[nodemon] starting `node server.js`[39m
+[1] NYORIA Tools running on http://localhost:5001
+[1] [32m[nodemon] restarting due to changes...[39m
+[1] [32m[nodemon] restarting due to changes...[39m
+[1] [32m[nodemon] restarting due to changes...[39m
+[1] [32m[nodemon] restarting due to changes...[39m
+[1] [32m[nodemon] restarting due to changes...[39m
+[1] [32m[nodemon] starting `node server.js`[39m
+[1] NYORIA Tools running on http://localhost:5001
+[1] [32m[nodemon] restarting due to changes...[39m
+[1] [32m[nodemon] starting `node server.js`[39m
+[1] NYORIA Tools running on http://localhost:5001
+[1] [32m[nodemon] restarting due to changes...[39m
+[1] [32m[nodemon] starting `node server.js`[39m
+[1] [32m[nodemon] still waiting for 1 sub-process to finish...[39m
+[1] NYORIA Tools running on http://localhost:5001
+[1] [32m[nodemon] restarting due to changes...[39m
+[1] [32m[nodemon] starting `node server.js`[39m
+[1] [32m[nodemon] still waiting for 1 sub-process to finish...[39m
+[1] [32m[nodemon] restarting due to changes...[39m
+[1] [32m[nodemon] restarting due to changes...[39m
+[1] [32m[nodemon] starting `node server.js`[39m
+[1] NYORIA Tools running on http://localhost:5001
+[1] [32m[nodemon] restarting due to changes...[39m
+[0] 12:02:25 PM [vite] vite.config.js changed, restarting server...
+[1] 12:02:25 PM [vite] vite.config.js changed, restarting server...
+[1] 12:02:25 PM [vite] server restarted.
+[1] [32m[nodemon] starting `node server.js`[39m
+[1] [32m[nodemon] still waiting for 1 sub-process to finish...[39m
+[0] 12:02:25 PM [vite] server restarted.
+[1] NYORIA Tools running on http://localhost:5001
+[1] [32m[nodemon] restarting due to changes...[39m
+[1] [32m[nodemon] restarting due to changes...[39m
+[1] [32m[nodemon] restarting due to changes...[39m
+[1] [32m[nodemon] restarting due to changes...[39m
+[1] [32m[nodemon] restarting due to changes...[39m
+[1] [32m[nodemon] starting `node server.js`[39m
+[1] [32m[nodemon] still waiting for 1 sub-process to finish...[39m
+[1] [32m[nodemon] restarting due to changes...[39m
+[1] [32m[nodemon] restarting due to changes...[39m
+[1] [32m[nodemon] restarting due to changes...[39m
+[1] [32m[nodemon] restarting due to changes...[39m
+[1] [32m[nodemon] restarting due to changes...[39m
+[1] [32m[nodemon] starting `node server.js`[39m
+[1] [32m[nodemon] restarting due to changes...[39m
+[1] [32m[nodemon] restarting due to changes...[39m
+[1] [32m[nodemon] restarting due to changes...[39m
+[1] [32m[nodemon] restarting due to changes...[39m
+[1] [32m[nodemon] restarting due to changes...[39m
+[1] [32m[nodemon] starting `node server.js`[39m
+[1] NYORIA Tools running on http://localhost:5001
+[1] [32m[nodemon] restarting due to changes...[39m
+[1] [32m[nodemon] starting `node server.js`[39m
+[1] NYORIA Tools running on http://localhost:5001
+[1] [32m[nodemon] restarting due to changes...[39m
+[1] [32m[nodemon] starting `node server.js`[39m
+[1] [32m[nodemon] still waiting for 1 sub-process to finish...[39m
+[1] NYORIA Tools running on http://127.0.0.1:5001
+[1] [32m[nodemon] restarting due to changes...[39m
+[1] [32m[nodemon] restarting due to changes...[39m
+[1] [32m[nodemon] restarting due to changes...[39m
+[1] [32m[nodemon] restarting due to changes...[39m
+[1] [32m[nodemon] restarting due to changes...[39m
+[1] [32m[nodemon] still waiting for 1 sub-process to finish...[39m
+[1] [32m[nodemon] still waiting for 1 sub-process to finish...[39m
+[1] [32m[nodemon] still waiting for 1 sub-process to finish...[39m
+[1] [32m[nodemon] starting `node server.js`[39m
+[1] [32m[nodemon] still waiting for 1 sub-process to finish...[39m
+[1] [32m[nodemon] still waiting for 1 sub-process to finish...[39m
+[1] [32m[nodemon] restarting due to changes...[39m
+[1] [32m[nodemon] restarting due to changes...[39m
+[1] [32m[nodemon] restarting due to changes...[39m
+[1] [32m[nodemon] restarting due to changes...[39m
+[1] [32m[nodemon] restarting due to changes...[39m
+[1] [32m[nodemon] starting `node server.js`[39m
+[1] NYORIA Tools running on http://127.0.0.1:5001

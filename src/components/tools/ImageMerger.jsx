@@ -3,6 +3,7 @@ import DropZone from "../DropZone";
 import ToolWrapper from "../ToolWrapper";
 import { Download, RefreshCw, Layers, Move, Plus } from "lucide-react";
 import confetti from "canvas-confetti";
+import { apiRequest } from "../../utils/api";
 
 export default function ImageMerger({ onBack }) {
   const [images, setImages] = useState([]);
@@ -82,17 +83,10 @@ export default function ImageMerger({ onBack }) {
     }
 
     try {
-      const response = await fetch("/api/merge-images", {
+      const data = await apiRequest("/api/merge-images", {
         method: "POST",
         body: formData,
       });
-
-      if (!response.ok) {
-        const errJson = await response.json();
-        throw new Error(errJson.error || "Failed to merge images");
-      }
-
-      const data = await response.json();
       setResult(data);
 
       confetti({

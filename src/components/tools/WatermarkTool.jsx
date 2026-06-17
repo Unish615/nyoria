@@ -3,6 +3,7 @@ import DropZone from "../DropZone";
 import ToolWrapper from "../ToolWrapper";
 import { Download, RefreshCw, FileSignature, Check, Type, Image } from "lucide-react";
 import confetti from "canvas-confetti";
+import { apiRequest } from "../../utils/api";
 
 export default function WatermarkTool({ onBack }) {
   const [image, setImage] = useState(null);
@@ -78,17 +79,10 @@ export default function WatermarkTool({ onBack }) {
     }
 
     try {
-      const response = await fetch("/api/watermark", {
+      const data = await apiRequest("/api/watermark", {
         method: "POST",
         body: formData,
       });
-
-      if (!response.ok) {
-        const errJson = await response.json();
-        throw new Error(errJson.error || "Failed to add watermark");
-      }
-
-      const data = await response.json();
       setResult(data);
 
       confetti({

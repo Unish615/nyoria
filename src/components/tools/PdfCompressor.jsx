@@ -3,6 +3,7 @@ import DropZone from "../DropZone";
 import ToolWrapper from "../ToolWrapper";
 import { Download, RefreshCw, FileMinus, Info, Check } from "lucide-react";
 import confetti from "canvas-confetti";
+import { apiRequest } from "../../utils/api";
 
 export default function PdfCompressor({ onBack }) {
   const [file, setFile] = useState(null);
@@ -34,17 +35,10 @@ export default function PdfCompressor({ onBack }) {
     formData.append("targetSize", `${targetSize}${unit}`);
 
     try {
-      const response = await fetch("/api/compress-pdf", {
+      const data = await apiRequest("/api/compress-pdf", {
         method: "POST",
         body: formData,
       });
-
-      if (!response.ok) {
-        const errJson = await response.json();
-        throw new Error(errJson.error || "Failed to compress PDF");
-      }
-
-      const data = await response.json();
       setResult(data);
 
       confetti({

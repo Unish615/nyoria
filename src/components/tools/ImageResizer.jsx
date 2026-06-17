@@ -3,6 +3,7 @@ import DropZone from "../DropZone";
 import ToolWrapper from "../ToolWrapper";
 import { Download, RefreshCw, Maximize2, Check } from "lucide-react";
 import confetti from "canvas-confetti";
+import { apiRequest } from "../../utils/api";
 
 const SOCIAL_PRESETS = [
   { name: "Instagram Square", width: 1080, height: 1080 },
@@ -88,17 +89,10 @@ export default function ImageResizer({ onBack }) {
     }
 
     try {
-      const response = await fetch("/api/resize-image", {
+      const data = await apiRequest("/api/resize-image", {
         method: "POST",
         body: formData,
       });
-
-      if (!response.ok) {
-        const errJson = await response.json();
-        throw new Error(errJson.error || "Failed to resize image");
-      }
-
-      const data = await response.json();
       setResult(data);
 
       confetti({

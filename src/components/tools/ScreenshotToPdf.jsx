@@ -3,6 +3,7 @@ import DropZone from "../DropZone";
 import ToolWrapper from "../ToolWrapper";
 import { Download, RefreshCw, Layers, Move, Check, Sparkles } from "lucide-react";
 import confetti from "canvas-confetti";
+import { apiRequest } from "../../utils/api";
 
 export default function ScreenshotToPdf({ onBack }) {
   const [images, setImages] = useState([]);
@@ -62,17 +63,10 @@ export default function ScreenshotToPdf({ onBack }) {
     formData.append("quality", 90);
 
     try {
-      const response = await fetch("/api/image-to-pdf", {
+      const data = await apiRequest("/api/image-to-pdf", {
         method: "POST",
         body: formData,
       });
-
-      if (!response.ok) {
-        const errJson = await response.json();
-        throw new Error(errJson.error || "Failed to compile screenshots");
-      }
-
-      const data = await response.json();
       setResult(data);
 
       confetti({

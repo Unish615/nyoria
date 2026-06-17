@@ -4,6 +4,7 @@ import ToolWrapper from "../ToolWrapper";
 import { Download, RefreshCw, FileText, Check, Copy, FileCode, Search, Trash2 } from "lucide-react";
 import confetti from "canvas-confetti";
 import { jsPDF } from "jspdf";
+import { apiRequest } from "../../utils/api";
 
 export default function OcrExtractor({ onBack }) {
   const [file, setFile] = useState(null);
@@ -80,17 +81,10 @@ export default function OcrExtractor({ onBack }) {
     formData.append("lang", language);
 
     try {
-      const response = await fetch("/api/ocr", {
+      const data = await apiRequest("/api/ocr", {
         method: "POST",
         body: formData,
       });
-
-      if (!response.ok) {
-        const errJson = await response.json();
-        throw new Error(errJson.error || "Failed to extract text");
-      }
-
-      const data = await response.json();
       const text = data.text?.trim()
         ? normalizeText(data.text)
         : "No text was detected in the uploaded image.";

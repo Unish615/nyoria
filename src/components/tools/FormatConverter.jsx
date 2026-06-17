@@ -14,6 +14,7 @@ import {
 import confetti from "canvas-confetti";
 import { getDocument, GlobalWorkerOptions } from "pdfjs-dist/legacy/build/pdf";
 import pdfjsWorkerUrl from "pdfjs-dist/build/pdf.worker.min.mjs?url";
+import { apiRequest } from "../../utils/api";
 
 GlobalWorkerOptions.workerSrc = pdfjsWorkerUrl;
 
@@ -192,17 +193,10 @@ export default function FormatConverter({ onBack }) {
 
     setProgress(`Converting ${imageItems.length} image${imageItems.length === 1 ? "" : "s"}...`);
 
-    const response = await fetch("/api/convert-format", {
+    const data = await apiRequest("/api/convert-format", {
       method: "POST",
       body: formData,
     });
-
-    if (!response.ok) {
-      const errJson = await response.json();
-      throw new Error(errJson.error || "Failed to convert image formats");
-    }
-
-    const data = await response.json();
     return data.results.map((item) => ({
       ...item,
       sourceType: "image",
