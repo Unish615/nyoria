@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
-    "dev": "nodemon --ignore dist server.js",
+    "dev": "node scripts/dev.js",
     "server": "NODE_ENV=production node server.js",
     "build": "vite build",
     "start": "npm run build && NODE_ENV=production node server.js",
