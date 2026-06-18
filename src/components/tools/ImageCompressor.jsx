@@ -18,6 +18,7 @@ import {
 import confetti from "canvas-confetti";
 import { apiRequest } from "../../utils/api";
 import { getStoredArray } from "../../utils/storage";
+import { getErrorMessage } from "../../utils/errors";
 
 export default function ImageCompressor({ onBack }) {
   const [files, setFiles] = useState([]);
@@ -149,7 +150,7 @@ export default function ImageCompressor({ onBack }) {
       localStorage.setItem("nyoria_history", JSON.stringify(history.slice(0, 50)));
       window.dispatchEvent(new Event("history_updated"));
     } catch (e) {
-      setError(e.message);
+      setError(getErrorMessage(e));
     } finally {
       setIsProcessing(false);
     }

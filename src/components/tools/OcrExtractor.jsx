@@ -6,6 +6,7 @@ import confetti from "canvas-confetti";
 import { jsPDF } from "jspdf";
 import { apiRequest } from "../../utils/api";
 import { getStoredArray } from "../../utils/storage";
+import { getErrorMessage } from "../../utils/errors";
 
 export default function OcrExtractor({ onBack }) {
   const [file, setFile] = useState(null);
@@ -108,7 +109,7 @@ export default function OcrExtractor({ onBack }) {
       localStorage.setItem("nyoria_history", JSON.stringify(history.slice(0, 50)));
       window.dispatchEvent(new Event("history_updated"));
     } catch (e) {
-      setError(e.message);
+      setError(getErrorMessage(e));
     } finally {
       setIsProcessing(false);
     }

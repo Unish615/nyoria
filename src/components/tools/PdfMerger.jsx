@@ -5,6 +5,7 @@ import { Download, RefreshCw, Layers, Move, BookOpen, Trash2 } from "lucide-reac
 import confetti from "canvas-confetti";
 import { apiRequest } from "../../utils/api";
 import { getStoredArray } from "../../utils/storage";
+import { getErrorMessage } from "../../utils/errors";
 
 // Helper: Load PDF.js dynamically
 const loadPdfJs = () => {
@@ -154,7 +155,7 @@ export default function PdfMerger({ onBack }) {
       localStorage.setItem("nyoria_history", JSON.stringify(history.slice(0, 50)));
       window.dispatchEvent(new Event("history_updated"));
     } catch (e) {
-      setError(e.message);
+      setError(getErrorMessage(e));
     } finally {
       setIsProcessing(false);
     }

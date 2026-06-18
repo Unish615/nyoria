@@ -5,6 +5,7 @@ import { Download, RefreshCw, FileMinus, Info, Check } from "lucide-react";
 import confetti from "canvas-confetti";
 import { apiRequest } from "../../utils/api";
 import { getStoredArray } from "../../utils/storage";
+import { getErrorMessage } from "../../utils/errors";
 
 export default function PdfCompressor({ onBack }) {
   const [file, setFile] = useState(null);
@@ -58,7 +59,7 @@ export default function PdfCompressor({ onBack }) {
       localStorage.setItem("nyoria_history", JSON.stringify(history.slice(0, 50)));
       window.dispatchEvent(new Event("history_updated"));
     } catch (e) {
-      setError(e.message);
+      setError(getErrorMessage(e));
     } finally {
       setIsProcessing(false);
     }

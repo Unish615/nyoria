@@ -15,6 +15,7 @@ const app = express();
 const PORT = process.env.PORT || 5001;
 const HOST = process.env.HOST || "127.0.0.1";
 const isProduction = process.env.NODE_ENV === "production";
+const isVercel = process.env.VERCEL === "1";
 const httpServer = createHttpServer(app);
 
 app.use(cors());
@@ -846,32 +847,39 @@ app.use("/api", (req, res) => {
   res.status(404).json({ error: `Route not found: ${req.method} ${req.originalUrl}` });
 });
 
-await configureFrontend(httpServer);
+if (!isVercel) {
+  await configureFrontend(httpServer);
+  registerErrorHandler();
 
-app.use((err, req, res, next) => {
-  console.error("Server error:", err);
-  if (res.headersSent) return next(err);
-  res.status(err.status || 500).json({
-    error: err.message || "Internal server error",
-  });
-});
+  httpServer.on("error", (error) => {
+    if (error.code === "EADDRINUSE") {
+      console.error(`Port ${PORT} is already in use on ${HOST}.`);
+      console.error(`Run: lsof -nP -iTCP:${PORT} -sTCP:LISTEN`);
+      console.error("Then stop the listed process, or start with another port:");
+      console.error("PORT=5002 npm run dev");
+      process.exit(1);
+    }
 
-httpServer.on("error", (error) => {
-  if (error.code === "EADDRINUSE") {
-    console.error(`Port ${PORT} is already in use on ${HOST}.`);
-    console.error(`Run: lsof -nP -iTCP:${PORT} -sTCP:LISTEN`);
-    console.error("Then stop the listed process, or start with another port:");
-    console.error("PORT=5002 npm run dev");
+    console.error("Server failed to start:", error);
     process.exit(1);
-  }
+  });
 
-  console.error("Server failed to start:", error);
-  process.exit(1);
-});
+  httpServer.listen(PORT, HOST, () => {
+    console.log(`NYORIA Tools running on http://${HOST}:${PORT}`);
+  });
+} else {
+  registerErrorHandler();
+}
 
-httpServer.listen(PORT, HOST, () => {
-  console.log(`NYORIA Tools running on http://${HOST}:${PORT}`);
-});
+function registerErrorHandler() {
+  app.use((err, req, res, next) => {
+    console.error("Server error:", err);
+    if (res.headersSent) return next(err);
+    res.status(err.status || 500).json({
+      error: err.message || "Internal server error",
+    });
+  });
+}
 
 async function configureFrontend(server) {
   if (isProduction) {
@@ -906,3 +914,5 @@ async function configureFrontend(server) {
     }
   });
 }
+
+export { app };

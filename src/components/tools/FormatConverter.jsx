@@ -16,6 +16,7 @@ import { getDocument, GlobalWorkerOptions } from "pdfjs-dist/legacy/build/pdf";
 import pdfjsWorkerUrl from "pdfjs-dist/build/pdf.worker.min.mjs?url";
 import { apiRequest } from "../../utils/api";
 import { getStoredArray } from "../../utils/storage";
+import { getErrorMessage } from "../../utils/errors";
 
 GlobalWorkerOptions.workerSrc = pdfjsWorkerUrl;
 
@@ -309,7 +310,7 @@ export default function FormatConverter({ onBack }) {
       localStorage.setItem("nyoria_history", JSON.stringify(history.slice(0, 50)));
       window.dispatchEvent(new Event("history_updated"));
     } catch (e) {
-      setError(e.message);
+      setError(getErrorMessage(e));
       setProgress("");
     } finally {
       setIsProcessing(false);
