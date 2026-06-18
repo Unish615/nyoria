@@ -13,7 +13,7 @@ import { createWorker } from "tesseract.js";
 
 const app = express();
 const PORT = process.env.PORT || 5001;
-const HOST = process.env.HOST || "127.0.0.1";
+const HOST = process.env.HOST || "0.0.0.0";
 const isProduction = process.env.NODE_ENV === "production";
 const isVercel = process.env.VERCEL === "1";
 const httpServer = createHttpServer(app);
@@ -865,7 +865,8 @@ if (!isVercel) {
   });
 
   httpServer.listen(PORT, HOST, () => {
-    console.log(`NYORIA Tools running on http://${HOST}:${PORT}`);
+    const displayHost = HOST === "0.0.0.0" ? "localhost" : HOST;
+    console.log(`NYORIA Tools running on http://${displayHost}:${PORT}`);
   });
 } else {
   registerErrorHandler();

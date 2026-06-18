@@ -1,6 +1,8 @@
 import { execFileSync, spawn } from "child_process";
+import os from "os";
 
 const port = process.env.PORT || "5001";
+const host = process.env.HOST || "0.0.0.0";
 
 function getPortPids() {
   try {
@@ -28,7 +30,17 @@ for (const pid of getPortPids()) {
   }
 }
 
+const lanAddress = getLanAddress();
+console.log(`Local URL: http://localhost:${port}`);
+if (lanAddress && host === "0.0.0.0") {
+  console.log(`Mobile URL: http://${lanAddress}:${port}`);
+}
+
 const child = spawn("nodemon", ["--ignore", "dist", "server.js"], {
+  env: {
+    ...process.env,
+    HOST: host,
+  },
   stdio: "inherit",
   shell: process.platform === "win32",
 });
@@ -50,3 +62,17 @@ child.on("exit", (code, signal) => {
 
   process.exit(code ?? 0);
 });
+
+function getLanAddress() {
+  const interfaces = os.networkInterfaces();
+
+  for (const addresses of Object.values(interfaces)) {
+    for (const address of addresses || []) {
+      if (address.family === "IPv4" && !address.internal) {
+        return address.address;
+      }
+    }
+  }
+
+  return "";
+}
