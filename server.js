@@ -17,19 +17,21 @@ const HOST = process.env.HOST || "0.0.0.0";
 const isProduction = process.env.NODE_ENV === "production";
 const isVercel = process.env.VERCEL === "1";
 const httpServer = createHttpServer(app);
+const MAX_UPLOAD_MB = 1000;
+const MAX_UPLOAD_BYTES = MAX_UPLOAD_MB * 1024 * 1024;
 
 app.use(cors());
-app.use(express.json({ limit: "50mb" }));
-app.use(express.urlencoded({ extended: true, limit: "50mb" }));
+app.use(express.json({ limit: `${MAX_UPLOAD_MB}mb` }));
+app.use(express.urlencoded({ extended: true, limit: `${MAX_UPLOAD_MB}mb` }));
 
 const storage = multer.memoryStorage();
 const upload = multer({
   storage,
-  limits: { fileSize: 100 * 1024 * 1024 },
+  limits: { fileSize: MAX_UPLOAD_BYTES },
 });
 
 app.get("/api/health", (req, res) => {
-  res.json({ ok: true, port: Number(PORT), host: HOST });
+  res.json({ ok: true, port: Number(PORT), host: HOST, maxUploadMb: MAX_UPLOAD_MB });
 });
 
 function parseJsonArrayField(value, fallback = []) {
@@ -876,6 +878,19 @@ function registerErrorHandler() {
   app.use((err, req, res, next) => {
     console.error("Server error:", err);
     if (res.headersSent) return next(err);
+
+    if (err instanceof multer.MulterError && err.code === "LIMIT_FILE_SIZE") {
+      return res.status(413).json({
+        error: `File is too large. Maximum upload size is ${MAX_UPLOAD_MB}MB.`,
+      });
+    }
+
+    if (err.type === "entity.too.large") {
+      return res.status(413).json({
+        error: `Request is too large. Maximum upload size is ${MAX_UPLOAD_MB}MB.`,
+      });
+    }
+
     res.status(err.status || 500).json({
       error: err.message || "Internal server error",
     });
